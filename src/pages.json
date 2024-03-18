@@ -37,6 +37,12 @@
       "style": {
         "navigationBarTitleText": "登录"
       }
+    },
+    {
+      "path": "pages/stone_type_list/stone_type_list",
+      "style": {
+        "navigationBarTitleText": "大理石分类管理"
+      }
     }
   ],
   "globalStyle": {

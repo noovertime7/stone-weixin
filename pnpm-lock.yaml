@@ -47,6 +47,9 @@ dependencies:
   '@dcloudio/uni-quickapp-webview':
     specifier: 3.0.0-alpha-3081220230802001
     version: 3.0.0-alpha-3081220230802001(postcss@8.4.28)(vue@3.3.4)
+  '@dcloudio/uni-ui':
+    specifier: ^1.5.2
+    version: 1.5.2
   pinia:
     specifier: 2.0.27
     version: 2.0.27(typescript@5.1.6)(vue@3.3.4)
@@ -1899,6 +1902,10 @@ packages:
       - supports-color
       - ts-node
       - vue
+    dev: false
+
+  /@dcloudio/uni-ui@1.5.2:
+    resolution: {integrity: sha512-/MO31TELyHcKt3nS5bo1t8lQmLSnP9EKlHcShjqM27gL0QeYtoc9UekOITRbA9zi8rnlII3Aw91DHtny3IodFg==}
     dev: false
 
   /@dcloudio/uni-vue-devtools@3.0.0-alpha-3080220230511001(postcss@8.4.28)(vue@3.3.4):
