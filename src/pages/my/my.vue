@@ -14,7 +14,7 @@ const orderTypes = [
     icon: 'icon-currency',
     url: '/pages/stone_type_list/stone_type_list',
   },
-  { type: 2, text: '上传大理石', icon: 'icon-gift', url: '/pages/stone_type_list/stone_type_list' },
+  { type: 2, text: '上传大理石', icon: 'icon-gift', url: '/pages/stone_add/stone_add' },
   { type: 3, text: '打卡', icon: 'icon-check', url: '/pages/stone_type_list/stone_type_list' },
   // { type: 4, text: '待评价', icon: 'icon-comment' },
 ]
@@ -93,9 +93,9 @@ const onScrolltolower = () => {
       </view>
     </view>
     <!-- 猜你喜欢 -->
-    <view class="guess">
+    <!-- <view class="guess">
       <XtxGuess ref="guessRef" />
-    </view>
+    </view> -->
   </scroll-view>
 </template>
 

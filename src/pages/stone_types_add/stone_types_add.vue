@@ -30,9 +30,9 @@ const form = ref({
 
 const GetStoneType = async () => {
   if (query.id) {
-    const res =await getStoneType(Number(query.id))
-  // 把数据合并到表单中
-  Object.assign(form.value, res.data)
+    const res = await getStoneType(Number(query.id))
+    // 把数据合并到表单中
+    Object.assign(form.value, res.data)
   }
 }
 
@@ -43,7 +43,7 @@ const onSubmit = async () => {
     // 校验通过后再发送请求
     if (query.id) {
       // 修改地址请求
-      await updateStoneType(query.id,form.value.name)
+      await updateStoneType(query.id, form.value.name)
     } else {
       // 新建请求
       const data: CreateStone = {

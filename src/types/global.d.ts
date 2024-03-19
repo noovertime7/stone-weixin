@@ -41,3 +41,8 @@ export type GoodsItem = {
   /** 商品价格 */
   price: number
 }
+
+export type SelectLocalData = {
+  text: string
+  value: string | number
+}

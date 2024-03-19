@@ -49,6 +49,12 @@
       "style": {
         "navigationBarTitleText": "新增大理石分类"
       }
+    },
+    {
+      "path": "pages/stone_add/stone_add",
+      "style": {
+        "navigationBarTitleText": "上传大理石"
+      }
     }
   ],
   "globalStyle": {
