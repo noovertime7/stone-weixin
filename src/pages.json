@@ -43,6 +43,12 @@
       "style": {
         "navigationBarTitleText": "大理石分类管理"
       }
+    },
+    {
+      "path": "pages/stone_types_add/stone_types_add",
+      "style": {
+        "navigationBarTitleText": "新增大理石分类"
+      }
     }
   ],
   "globalStyle": {

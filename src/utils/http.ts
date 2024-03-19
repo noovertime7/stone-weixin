@@ -66,9 +66,9 @@ export const http = <T>(options: UniApp.RequestOptions) => {
       ...options,
       // 响应成功
       success(res) {
-        const r =  res.data as Data<T>
+        const r = res.data as Data<T>
         // 状态码 2xx， axios 就是这样设计的
-        if (res.statusCode >= 200 && res.statusCode < 300 && r.code === 0 ) {
+        if (res.statusCode >= 200 && res.statusCode < 300 && r.code === 0) {
           // 2.1 提取核心数据 res.data
           resolve(res.data as Data<T>)
         } else if (res.statusCode === 401) {

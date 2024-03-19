@@ -3,7 +3,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import { postLoginWxMinAPI, postLoginWxMinSimpleAPI } from '@/services/login'
 import { useMemberStore } from '@/stores'
 import type { LoginResult } from '@/types/member'
-import { ref } from 'vue';
+import { ref } from 'vue'
 
 // 获取 code 登录凭证
 let code = ''
@@ -35,52 +35,59 @@ const loginSuccess = (profile: LoginResult) => {
 
 // 模拟手机号码快捷登录（开发练习）
 const onGetphonenumberSimple = async () => {
-  console.log(loginForm.value);
+  console.log(loginForm.value)
   const res = await postLoginWxMinSimpleAPI(loginForm.value)
-
 
   loginSuccess(res.data)
 }
 
 const loginForm = ref({
-  "username":"",
-  "password":""
+  username: '',
+  password: '',
 })
 </script>
 
 <template>
   <view class="viewport">
     <view class="logo">
-      <image
-        src="../../static/images/logo.png"
-      ></image>
+      <image src="../../static/images/logo.png"></image>
     </view>
     <view class="login">
       <!-- 网页端表单登录 -->
-      <input class="input" type="text" placeholder="请输入用户名/手机号码" v-model="loginForm.username" />
-      <input class="input" type="text" password placeholder="请输入密码" v-model="loginForm.password" />
-     <button class="button phone" @tap="onGetphonenumberSimple">登录</button>
+      <input
+        class="input"
+        type="text"
+        placeholder="请输入用户名/手机号码"
+        v-model="loginForm.username"
+      />
+      <input
+        class="input"
+        type="text"
+        password
+        placeholder="请输入密码"
+        v-model="loginForm.password"
+      />
+      <button class="button phone" @tap="onGetphonenumberSimple">登录</button>
     </view>
-    </view>
-      <!-- 小程序端授权登录 -->
-      <!-- <button class="button phone" open-type="getPhoneNumber" @getphonenumber="onGetphonenumber">
+  </view>
+  <!-- 小程序端授权登录 -->
+  <!-- <button class="button phone" open-type="getPhoneNumber" @getphonenumber="onGetphonenumber">
         <text class="icon icon-phone"></text>
         手机号快捷登录
       </button> -->
-      <!-- <view class="extra"> -->
-        <!-- <view class="caption">
+  <!-- <view class="extra"> -->
+  <!-- <view class="caption">
           <text>其他登录方式</text>
         </view> -->
-        <!-- <view class="options"> -->
-          <!-- 通用模拟登录 -->
-          <!-- <button @tap="onGetphonenumberSimple"> -->
-            <!-- <text class="icon icon-phone">模拟快捷登录</text> -->
-          <!-- </button> -->
-        <!-- </view> -->
-      <!-- </view> -->
-      <!-- <view class="tips">登录/注册即视为你同意《服务条款》和《小兔鲜儿隐私协议》</view> -->
-    <!-- </view> -->
-
+  <!-- <view class="options"> -->
+  <!-- 通用模拟登录 -->
+  <!-- <button @tap="onGetphonenumberSimple"> -->
+  <!-- <text class="icon icon-phone">模拟快捷登录</text> -->
+  <!-- </button> -->
+  <!-- </view> -->
+  <!-- </view> -->
+  <!-- <view class="tips">登录/注册即视为你同意《服务条款》和《小兔鲜儿隐私协议》</view> -->
+  <!-- </view> -->
 </template>
 
 <style lang="scss">

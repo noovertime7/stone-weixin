@@ -1,57 +1,175 @@
+<script setup lang="ts">
+import { deleteStoneType, stoneTypeList } from '@/services/stone_types'
+import type { StoneType } from '@/types/stone_types'
+import { ref } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
+const StonesTypes = ref<StoneType[]>()
+
+const GetStoneTypes = async () => {
+  const res = await stoneTypeList()
+  StonesTypes.value = res.data
+}
+
+const handleDelete = async (id: number) => {
+  // 二次确认
+  uni.showModal({
+    content: '删除分类?',
+    success: async (res) => {
+      if (res.confirm) {
+        // 根据id删除收货地址
+        await deleteStoneType(id)
+        // 重新获取收货地址列表
+        GetStoneTypes()
+      }
+    },
+  })
+}
+
+// 初始化调用(页面显示)
+onShow(() => {
+  GetStoneTypes()
+})
+</script>
+
 <template>
-
-  <uni-list>
-    <uni-list :border="true">
-      <!-- 自定义右侧内容 -->
-      <uni-list-chat title="uni-app" :avatar-list="avatarList" note="您收到一条新的消息" time="2020-02-02 20:20" badge-positon="left" badge-text="dot">
-        <view>
-          <text class="chat-custom-text">刚刚</text>
-          <!-- 需要使用 uni-icons 请自行引入 -->
-          <view>
-            <!-- 添加class属性并指定样式类名 -->
-            <view class="uni-group">
-							<button class="uni-button" size="mini" type="primary">修改</button>&ensp;
-							<button class="uni-button" size="mini" type="warn">删除</button>
-						</view>
-          </view>
+  <view class="viewport">
+    <!-- 地址列表 -->
+    <scroll-view class="scroll-view" scroll-y>
+      <view v-if="StonesTypes?.length" class="address">
+        <view class="address-list">
+          <!-- 收货地址项 -->
+          <uni-swipe-action-item class="item" v-for="item in StonesTypes" :key="item.id">
+            <view class="item-content">
+              <view class="user">
+                {{ item.name }}
+              </view>
+              <navigator
+                class="edit"
+                hover-class="none"
+                :url="`/pages/stone_types_add/stone_types_add?id=${item.id}`"
+              >
+                修改
+              </navigator>
+            </view>
+            <!-- 右侧插槽 -->
+            <template #right>
+              <button class="delete-button" @tap="handleDelete(item.id)">删除</button>
+            </template>
+          </uni-swipe-action-item>
         </view>
-      </uni-list-chat>
-    </uni-list>
-  </uni-list>
-
-
+      </view>
+      <view v-else class="blank">暂无大理石分类</view>
+    </scroll-view>
+    <!-- 添加按钮 -->
+    <view class="add-btn">
+      <navigator hover-class="none" url="/pages/stone_types_add/stone_types_add">
+        新建大理石分类
+      </navigator>
+    </view>
+  </view>
 </template>
 
-<script >
-  export default {
-	components: {},
-	data() {
-		return {
-			avatarList: [{
-				url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png'
-			}, {
-				url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png'
-			}, {
-				url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png'
-			}]
-		}
-	}
-}
-</script>
-<style>
-
-.my-button {
-  background-color: #4cd964; /* 设置按钮背景颜色 */
-  color: white; /* 设置按钮文本颜色 */
-  border: none; /* 去除边框 */
-  padding: 10px 20px; /* 设置内边距 */
-  text-align: center; /* 文本居中 */
-  text-transform: uppercase; /* 文本转换为大写 */
-  transition: background-color 0.3s; /* 背景颜色变化过渡动效 */
+<style lang="scss">
+page {
+  height: 100%;
+  overflow: hidden;
 }
 
-/* 按钮悬停时的样式 */
-.my-button:hover {
-  background-color: #3ea54c;
+/* 删除按钮 */
+.delete-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 100%;
+  font-size: 28rpx;
+  color: #fff;
+  border-radius: 0;
+  padding: 0;
+  background-color: #cf4444;
+}
+
+.viewport {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #f4f4f4;
+
+  .scroll-view {
+    padding-top: 20rpx;
+  }
+}
+
+.address {
+  padding: 0 20rpx;
+  margin: 0 20rpx;
+  border-radius: 10rpx;
+  background-color: #fff;
+
+  .item-content {
+    line-height: 1;
+    padding: 40rpx 10rpx 38rpx;
+    border-bottom: 1rpx solid #ddd;
+    position: relative;
+
+    .edit {
+      position: absolute;
+      top: 36rpx;
+      right: 30rpx;
+      padding: 2rpx 0 2rpx 20rpx;
+      border-left: 1rpx solid #666;
+      font-size: 26rpx;
+      color: #666;
+      line-height: 1;
+    }
+  }
+
+  .item:last-child .item-content {
+    border: none;
+  }
+
+  .user {
+    font-size: 28rpx;
+    margin-bottom: 20rpx;
+    color: #333;
+
+    .contact {
+      color: #666;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4rpx 10rpx 2rpx 14rpx;
+      margin: 2rpx 0 0 10rpx;
+      font-size: 26rpx;
+      color: #27ba9b;
+      border-radius: 6rpx;
+      border: 1rpx solid #27ba9b;
+    }
+  }
+
+  .locate {
+    line-height: 1.6;
+    font-size: 26rpx;
+    color: #333;
+  }
+}
+
+.blank {
+  margin-top: 300rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: #888;
+}
+
+.add-btn {
+  height: 80rpx;
+  text-align: center;
+  line-height: 80rpx;
+  margin: 30rpx 20rpx;
+  color: #fff;
+  border-radius: 80rpx;
+  font-size: 30rpx;
+  background-color: #27ba9b;
 }
 </style>

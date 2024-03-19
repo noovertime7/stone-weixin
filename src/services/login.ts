@@ -24,10 +24,10 @@ export const postLoginWxMinAPI = (data: LoginParams) => {
  * 小程序登录_内测版
  * @param phoneNumber 模拟手机号码
  */
-export const postLoginWxMinSimpleAPI = (data:any) => {
+export const postLoginWxMinSimpleAPI = (data: any) => {
   return http<LoginResult>({
     method: 'POST',
     url: '/users/login',
-    data
+    data,
   })
 }

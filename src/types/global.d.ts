@@ -20,6 +20,10 @@ export type PageParams = {
   pageSize?: number
 }
 
+export type StringData = {
+  data: string
+}
+
 /** 通用商品类型 */
 export type GoodsItem = {
   /** 商品描述 */

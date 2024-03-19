@@ -8,9 +8,14 @@ import { ref } from 'vue'
 const { safeAreaInsets } = uni.getSystemInfoSync()
 // 订单选项
 const orderTypes = [
-  { type: 1, text: '分类管理', icon: 'icon-currency',"url":"/pages/stone_type_list/stone_type_list" },
-  { type: 2, text: '上传大理石', icon: 'icon-gift',"url":"/pages/stone_type_list/stone_type_list" },
-  { type: 3, text: '打卡', icon: 'icon-check',"url":"/pages/stone_type_list/stone_type_list" },
+  {
+    type: 1,
+    text: '分类管理',
+    icon: 'icon-currency',
+    url: '/pages/stone_type_list/stone_type_list',
+  },
+  { type: 2, text: '上传大理石', icon: 'icon-gift', url: '/pages/stone_type_list/stone_type_list' },
+  { type: 3, text: '打卡', icon: 'icon-check', url: '/pages/stone_type_list/stone_type_list' },
   // { type: 4, text: '待评价', icon: 'icon-comment' },
 ]
 
