@@ -51,14 +51,14 @@ const onScrolltolower = () => {
       <view class="overview" v-else>
         <navigator url="/pages/login/login" hover-class="none">
           <image
-            class="avatar gray"
+            class="avatar"
             mode="aspectFill"
-            src="http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-06/db628d42-88a7-46e7-abb8-659448c33081.png"
+            src="http://qiniu.yunxue521.top/stone/WechatIMG155.jpeg"
           ></image>
         </navigator>
         <view class="meta">
           <navigator url="/pages/login/login" hover-class="none" class="nickname">
-            未登录
+            骏腾石材~~陈
           </navigator>
           <view class="extra" hover-class="none">
             <text class="update">
@@ -134,7 +134,7 @@ page {
   .avatar {
     width: 120rpx;
     height: 120rpx;
-    border-radius: 50%;
+    border-radius: 20%;
     background-color: #eee;
   }
 

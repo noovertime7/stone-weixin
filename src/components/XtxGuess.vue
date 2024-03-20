@@ -58,14 +58,14 @@ defineExpose({
       class="guess-item"
       v-for="item in guessList"
       :key="item.id"
-      :url="`/pages/goods/goods?id=${item.id}`"
+      :url="`/pages/stone/stone?id=${item.id}`"
     >
       <image class="image" mode="aspectFill" :src="item.coverImages[0]"></image>
       <view class="name"> {{ item.name }} </view>
-      <view class="price">
+      <!-- <view class="price">
         <text class="small">¥</text>
         <text>{{ 100 }}</text>
-      </view>
+      </view> -->
     </navigator>
   </view>
   <view class="loading-text">
