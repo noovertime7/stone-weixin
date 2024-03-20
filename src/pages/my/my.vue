@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import { useMemberStore } from '@/stores'
 import { ref } from 'vue'
-
+import XtxGuess from '@/components/XtxGuess.vue'
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
 // 订单选项
@@ -14,7 +14,7 @@ const orderTypes = [
     icon: 'icon-currency',
     url: '/pages/stone_type_list/stone_type_list',
   },
-  { type: 2, text: '上传大理石', icon: 'icon-gift', url: '/pages/stone_add/stone_add' },
+  { type: 2, text: '添加大理石', icon: 'icon-gift', url: '/pages/stone_add/stone_add' },
   { type: 3, text: '打卡', icon: 'icon-check', url: '/pages/stone_type_list/stone_type_list' },
   // { type: 4, text: '待评价', icon: 'icon-comment' },
 ]
@@ -39,9 +39,12 @@ const onScrolltolower = () => {
           <view class="nickname">
             {{ memberStore.profile.nickname || memberStore.profile.account }}
           </view>
-          <navigator class="extra" url="/pagesMember/profile/profile" hover-class="none">
-            <text class="update">更新头像昵称</text>
-          </navigator>
+          <view class="extra" hover-class="none">
+            <text class="update">
+              <uni-icons type="phone" size="30"></uni-icons>
+              18605486770</text
+            >
+          </view>
         </view>
       </view>
       <!-- 情况2：未登录 -->
@@ -57,8 +60,11 @@ const onScrolltolower = () => {
           <navigator url="/pages/login/login" hover-class="none" class="nickname">
             未登录
           </navigator>
-          <view class="extra">
-            <text class="tips">点击登录账号</text>
+          <view class="extra" hover-class="none">
+            <text class="update">
+              <uni-icons type="phone" size="30"></uni-icons>
+              18605486770</text
+            >
           </view>
         </view>
       </view>
@@ -67,12 +73,12 @@ const onScrolltolower = () => {
       </navigator> -->
     </view>
     <!-- 我的订单 -->
-    <view class="orders">
+    <view class="orders" v-if="memberStore.profile">
       <view class="title">
-        我的订单
-        <navigator class="navigator" url="/pagesOrder/list/list?type=0" hover-class="none">
+        大理石管理
+        <!-- <navigator class="navigator" url="/pagesOrder/list/list?type=0" hover-class="none">
           查看全部订单<text class="icon-right"></text>
-        </navigator>
+        </navigator> -->
       </view>
       <view class="section">
         <!-- 订单 -->
@@ -93,9 +99,9 @@ const onScrolltolower = () => {
       </view>
     </view>
     <!-- 猜你喜欢 -->
-    <!-- <view class="guess">
+    <view class="guess">
       <XtxGuess ref="guessRef" />
-    </view> -->
+    </view>
   </scroll-view>
 </template>
 
@@ -158,20 +164,20 @@ page {
 
   .extra {
     display: flex;
-    font-size: 20rpx;
+    font-size: 30rpx;
   }
 
   .tips {
     font-size: 22rpx;
   }
 
-  .update {
-    padding: 3rpx 10rpx 1rpx;
-    color: rgba(255, 255, 255, 0.8);
-    border: 1rpx solid rgba(255, 255, 255, 0.8);
-    margin-right: 10rpx;
-    border-radius: 30rpx;
-  }
+  // .update {
+  //   padding: 3rpx 10rpx 1rpx;
+  //   color: rgba(255, 255, 255, 0.8);
+  //   border: 1rpx solid rgba(255, 255, 255, 0.8);
+  //   margin-right: 10rpx;
+  //   border-radius: 30rpx;
+  // }
 
   .settings {
     position: absolute;

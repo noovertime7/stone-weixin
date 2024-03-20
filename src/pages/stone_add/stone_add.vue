@@ -16,7 +16,7 @@
     <uni-section title="大理石描述" type="line" padding>
       <uni-easyinput
         class="uni-px-5"
-        v-model="formData.describe"
+        v-model="formData.description"
         type="textarea"
         placeholder="大理石描述信息，显示在详情页"
       ></uni-easyinput>
@@ -25,75 +25,81 @@
       <view class="example-body">
         <uni-file-picker
           :imageStyles="{ width: '25%', height: '86px' }"
+          ref="coverImageRef"
           limit="3"
-          :delIcon="true"
-          :auto-upload="false"
           title="最多选择3张图片"
-          @select="onSelect"
+          @select="onCoverImageSelect"
         ></uni-file-picker>
       </view>
     </uni-section>
     <uni-section title="详情图片" type="line" padding>
       <view class="example-body">
-        <uni-file-picker limit="9" title="最多选择9张图片"></uni-file-picker>
+        <uni-file-picker
+          ref="detailImageRef"
+          :imageStyles="{ width: '25%', height: '86px' }"
+          @select="onDetailImageSelect"
+          :delIcon="true"
+          :auto-upload="false"
+          limit="9"
+          title="最多选择9张图片"
+        ></uni-file-picker>
       </view>
     </uni-section>
   </view>
   <!-- 提交按钮 -->
-  <button @tap="onSubmit" class="button">保存</button>
+  <button @tap="onSubmit" class="button">添加</button>
 </template>
 
 <script lang="ts" setup>
 import { stoneTypeList } from '@/services/stone_types'
 import type { SelectLocalData } from '@/types/global'
 import type { StoneType } from '@/types/stone_types'
+import { createStone } from '@/services/stone'
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+import { upload, type image, type StoneformData } from './helper'
 
-const formData = ref({
+const formData = ref<StoneformData>({
   name: '',
-  age: '',
-  hobby: '',
-  stoneTypeId: '',
-  describe: '',
+  coverImages: [],
+  detailImages: [],
+  stoneTypeId: 0,
+  description: '',
 })
 
 const StonesTypes = ref<StoneType[]>()
 
 const SelectStoneTypes = ref<SelectLocalData[]>([])
-const GetStoneTypes = async () => {
-  SelectStoneTypes.value = [
-    {
-      text: '云石1',
-      value: 1,
-    },
-    {
-      text: '云石2',
-      value: 2,
-    },
-  ]
-  // const res = await stoneTypeList()
-  // StonesTypes.value = res.data
-  // StonesTypes.value.forEach((item) => {
-  //   SelectStoneTypes.value.push({
-  //     text: item.name,
-  //     value: item.id,
-  //   })
-  // })
-}
 
-type image = {
-  tempFilePath: any
-  name: string
+const GetStoneTypes = async () => {
+  StonesTypes.value = []
+  const res = await stoneTypeList()
+  StonesTypes.value = res.data
+  StonesTypes.value.forEach((item) => {
+    SelectStoneTypes.value.push({
+      text: item.name,
+      value: item.id,
+    })
+  })
 }
 
 const converImages = ref<image[]>([])
-
+const detailImages = ref<image[]>([])
 // 图片上传相关
-const onSelect = (file: any) => {
-  converImages.value?.push({
-    tempFilePath: file.tempFiles[0]?.path,
-    name: file.tempFiles[0]?.name,
+const onCoverImageSelect = (file: any) => {
+  file.tempFiles.forEach((item) => {
+    converImages.value?.push({
+      tempFilePath: item.path,
+      name: item.name,
+    })
+  })
+}
+const onDetailImageSelect = (file: any) => {
+  file.tempFiles.forEach((item) => {
+    detailImages.value?.push({
+      tempFilePath: item.path,
+      name: item.name,
+    })
   })
 }
 
@@ -104,21 +110,61 @@ onShow(() => {
   GetStoneTypes()
 })
 
-const onSubmit = () => {
-  console.log('提交', formData.value)
-  console.log(converImages.value)
-  if (converImages.value.length > 0) {
-    converImages.value.forEach((file) => {
-      uni.uploadFile({
-        url: 'http://127.0.0.1:8080/upload',
-        filePath: file.tempFilePath,
-        name: 'file',
-        success: (res) => {
-          console.log('文件上传成功', res)
-        },
-      })
-    })
+const coverImageRef = ref()
+const detailImageRef = ref()
+const coverImageLinks = ref<string[]>([])
+const detailImageLinks = ref<string[]>([])
+const onSubmit = async () => {
+  // 显示 Loading
+  uni.showLoading({
+    title: '添加中...',
+    mask: true, // 是否显示透明蒙层，防止触摸穿透，默认为 false
+  })
+
+  // 上传 converImages
+  for (const file of converImages.value) {
+    const resp = await upload(file)
+    if (resp) {
+      coverImageLinks.value.push(resp.data[0])
+    }
   }
+
+  // 上传 detailImages
+  for (const file of detailImages.value) {
+    const resp = await upload(file)
+    if (resp) {
+      detailImageLinks.value.push(resp.data[0])
+    }
+  }
+
+  formData.value.coverImages = coverImageLinks.value
+  formData.value.detailImages = detailImageLinks.value
+
+  const res = await createStone(formData.value)
+  console.log(res)
+
+  if (res) {
+    uni.showToast({ icon: 'success', title: '添加成功' })
+    clean()
+  }
+
+  uni.hideLoading()
+}
+
+const clean = () => {
+  converImages.value = []
+  detailImages.value = []
+  coverImageLinks.value = []
+  detailImageLinks.value = []
+  formData.value = {
+    name: '',
+    coverImages: [],
+    detailImages: [],
+    stoneTypeId: 0,
+    description: '',
+  }
+  detailImageRef.value?.clearFiles()
+  coverImageRef.value?.clearFiles()
 }
 </script>
 <style lang="scss">

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { PageParams } from '@/types/global'
 import { ref, onMounted } from 'vue'
-import { getHomeGoodsGuessLikeAPI } from '@/services/home'
-import type { GuessItem } from '@/types/home'
+import { pageStone } from '@/services/stone'
+import type { Stone } from '@/types/stone'
 // 分页参数
 const pageParams: Required<PageParams> = {
   page: 1,
   pageSize: 10,
 }
 // 猜你喜欢的列表
-const guessList = ref<GuessItem[]>([])
+const guessList = ref<Stone[]>([])
 // 已结束标记
 const finish = ref(false)
 // 获取猜你喜欢数据
@@ -18,11 +18,11 @@ const getHomeGoodsGuessLikeData = async () => {
   if (finish.value === true) {
     return uni.showToast({ icon: 'none', title: '没有更多数据~' })
   }
-  const res = await getHomeGoodsGuessLikeAPI(pageParams)
+  const res = await pageStone(pageParams)
   // 数组追加
-  guessList.value.push(...res.data.items)
+  guessList.value.push(...res.data.list)
   // 分页条件
-  if (pageParams.page < res.data.pages) {
+  if (pageParams.page < res.data.total) {
     // 页码累加
     pageParams.page++
   } else {
@@ -60,11 +60,11 @@ defineExpose({
       :key="item.id"
       :url="`/pages/goods/goods?id=${item.id}`"
     >
-      <image class="image" mode="aspectFill" :src="item.picture"></image>
+      <image class="image" mode="aspectFill" :src="item.coverImages[0]"></image>
       <view class="name"> {{ item.name }} </view>
       <view class="price">
         <text class="small">¥</text>
-        <text>{{ item.price }}</text>
+        <text>{{ 100 }}</text>
       </view>
     </navigator>
   </view>
