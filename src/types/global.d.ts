@@ -18,6 +18,7 @@ export type PageParams = {
   page?: number
   /** 页大小：默认值为 10 */
   pageSize?: number
+  keyword?: string
 }
 
 export type StringData = {

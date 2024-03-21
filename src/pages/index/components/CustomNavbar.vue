@@ -1,6 +1,12 @@
 <script setup lang="ts">
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
+
+const onSearch = () => {
+  uni.navigateTo({
+    url: '/pages/search/search',
+  })
+}
 </script>
 
 <template>
@@ -11,8 +17,8 @@ const { safeAreaInsets } = uni.getSystemInfoSync()
       <text class="logo-text">高品质 · 亲民 · 高效</text>
     </view>
     <!-- 搜索条 -->
-    <view class="search">
-      <text class="icon-search">搜索大理石</text>
+    <view class="search" @click="onSearch">
+      <text class="icon-search">搜索大理石或安装记录</text>
       <text class="icon-scan"></text>
     </view>
   </view>

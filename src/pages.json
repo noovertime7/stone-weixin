@@ -12,6 +12,8 @@
 		{
 			"path": "pages/index/index",
 			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "首页"
 			}
 		},
@@ -60,9 +62,20 @@
 		{
 			"path": "pages/stone/stone",
 			"style": {
-				"navigationBarTitleText": "大理石"
+				"navigationBarTitleText": "大理石详情"
 			}
-		}
+		},{
+      "path" : "pages/search/search",
+      "style" :{
+          "navigationBarTitleText": "搜索大理石"
+        }
+      },
+      {
+        "path" : "pages/search_result/search_result",
+        "style" :{
+            "navigationBarTitleText": "搜索大理石"
+          }
+        }
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

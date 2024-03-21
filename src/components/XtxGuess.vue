@@ -7,6 +7,7 @@ import type { Stone } from '@/types/stone'
 const pageParams: Required<PageParams> = {
   page: 1,
   pageSize: 10,
+  keyword: '',
 }
 // 猜你喜欢的列表
 const guessList = ref<Stone[]>([])
