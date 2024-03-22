@@ -76,6 +76,9 @@ const getHotBannerStones = async () => {
 const getstoneTypes = async () => {
   const res = await stoneTypeList()
   stoneTypeListData.value = res.data
+
+  // 页面首次打开需要获取当前类型下的大理石
+  handelClickType(stoneTypeListData.value[activeIndex.value].id)
 }
 
 const handelClickType = async (id: number) => {
