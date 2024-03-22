@@ -5,7 +5,7 @@ import type { Stone } from '@/types/stone'
 import { copyWeixinNum, makeCall } from '@/utils/utils'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-
+import { onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
 
@@ -28,6 +28,27 @@ const getSameStonesData = async () => {
   }
 }
 
+/** 激活“分享给好友” */
+onShareAppMessage((options: Page.ShareAppMessageOption): Page.CustomShareContent => {
+  let pages = getCurrentPages() //获取当前页面栈的信息
+  let currentPage = pages[pages.length - 1] //获取到当前页面栈中最后一个页面的索引
+
+  let obj: Page.CustomShareContent = {
+    title: `${StoneData.value?.name}`,
+    desc: `${StoneData.value?.description}`,
+    path: `${currentPage.route}?id=${query.id}`,
+  }
+
+  return obj
+})
+/** 激活“分享到朋友圈”， 注意：需要先激活“分享给好友” */
+onShareTimeline((): Page.ShareTimelineContent => {
+  return {
+    title: `${StoneData.value?.name}`,
+    query: `id=${query.id}`,
+  }
+})
+
 onLoad(() => {
   getStoneData()
   getSameStonesData()
@@ -45,6 +66,14 @@ const onTapImage = (url: string) => {
   uni.previewImage({
     current: url,
     urls: StoneData.value!.coverImages,
+  })
+}
+
+const openDetailImage = (url: string) => {
+  // 大图预览
+  uni.previewImage({
+    current: url,
+    urls: StoneData.value!.detailImages,
   })
 }
 </script>
@@ -109,7 +138,7 @@ const onTapImage = (url: string) => {
 
         <!-- 图片详情 -->
         <view v-for="(item, index) in StoneData?.detailImages" :key="index">
-          <image mode="widthFix" :src="item"></image
+          <image mode="widthFix" :src="item" @tap="openDetailImage(item)"></image
         ></view>
       </view>
     </view>
@@ -150,6 +179,16 @@ const onTapImage = (url: string) => {
       </navigator> -->
     <!-- </view> -->
     <view class="buttons">
+      <view class="icons">
+        <button class="icons-button"><text class="icon-heart"></text>收藏</button>
+        <button class="icons-button" open-type="share">
+          <i class="iconfont stone-fenxiang"></i>
+          分享
+        </button>
+        <navigator class="icons-button" url="/pages/cart/cart2" open-type="navigate">
+          <text class="icon-cart"></text>安装过
+        </navigator>
+      </view>
       <view class="addcart" @tap="copyWeixinNum"> 微信联系 </view>
       <view class="buynow" @tap="makeCall"> 电话联系 </view>
     </view>

@@ -34,6 +34,13 @@ export const getStoneById = (id: number | string) => {
   })
 }
 
+export const getStonesByTypeId = (tid: number | string) => {
+  return http<Stone[]>({
+    method: 'GET',
+    url: `/stones/${tid}/bytype`,
+  })
+}
+
 export const getSameStones = (id: number | string) => {
   return http<Stone[]>({
     method: 'GET',

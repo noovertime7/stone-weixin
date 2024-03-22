@@ -1,144 +1,237 @@
-<script>
-export default {
-  data() {
-    return {
-      value: '',
-      password: '',
-      placeholderStyle: 'color:#2979FF;font-size:14px',
-      styles: {
-        color: '#2979FF',
-        borderColor: '#2979FF',
-      },
-    }
-  },
-  onLoad() {},
-  onReady() {},
-  methods: {
-    input(e) {
-      console.log('输入内容：', e)
-    },
-    iconClick(type) {
-      uni.showToast({
-        title: `点击了${type === 'prefix' ? '左侧' : '右侧'}的图标`,
-        icon: 'none',
-      })
-    },
-  },
-}
-</script>
-
 <template>
-  <view>
-    <uni-card :is-shadow="false" is-full>
-      <text class="uni-h6"
-        >easyinput 组件是对原生input组件的增强 ，是专门为配合表单组件 uni-forms 而设计的，easyinput
-        内置了边框，图标等，同时包含 input所有功能</text
-      >
-    </uni-card>
-    <uni-section title="默认" subTitle="使用 focus 属性自动获取输入框焦点" type="line" padding>
-      <uni-easyinput
-        errorMessage
-        v-model="value"
-        focus
-        placeholder="请输入内容"
-        @input="input"
-      ></uni-easyinput>
-    </uni-section>
-
-    <uni-section
-      title="去除空格"
-      subTitle="使用 trim 属性 ,可以控制返回内容的空格 "
-      type="line"
-      padding
-    >
-      <text class="uni-subtitle">输入内容：{{ '"' + value + '"' }}</text>
-      <uni-easyinput
-        class="uni-mt-5"
-        trim="all"
-        v-model="value"
-        placeholder="请输入内容"
-        @input="input"
-      ></uni-easyinput>
-    </uni-section>
-
-    <uni-section
-      title="自定义样式"
-      subTitle="使用 styles 属性 ,可以自定义输入框样式"
-      type="line"
-      padding
-    >
-      <uni-easyinput
-        v-model="value"
-        :styles="styles"
-        :placeholderStyle="placeholderStyle"
-        placeholder="请输入内容"
-        @input="input"
-      ></uni-easyinput>
-    </uni-section>
-    <uni-section
-      title="图标"
-      subTitle="使用 prefixIcon / suffixIcon 属性 ,可以自定义输入框左右侧图标"
-      type="line"
-      padding
-    >
-      <uni-easyinput
-        prefixIcon="search"
-        v-model="value"
-        placeholder="左侧图标"
-        @iconClick="iconClick"
-      >
-      </uni-easyinput>
-      <uni-easyinput
-        class="uni-mt-5"
-        suffixIcon="search"
-        v-model="value"
-        placeholder="右侧图标"
-        @iconClick="iconClick"
-      ></uni-easyinput>
-    </uni-section>
-    <uni-section title="禁用" subTitle="使用 disabled 属性禁用输入框" type="line" padding>
-      <uni-easyinput disabled value="已禁用" placeholder="请输入内容"></uni-easyinput>
-    </uni-section>
-
-    <uni-section
-      title="密码框"
-      subTitle="指定属性 type=password 使用密码框,右侧会显示眼睛图标"
-      type="line"
-      padding
-    >
-      <uni-easyinput type="password" v-model="password" placeholder="请输入密码"></uni-easyinput>
-    </uni-section>
-
-    <uni-section
-      title="多行文本"
-      subTitle="指定属性 type=textarea 使用多行文本框"
-      type="line"
-      padding
-    >
-      <uni-easyinput type="textarea" v-model="value" placeholder="请输入内容"></uni-easyinput>
-    </uni-section>
-
-    <uni-section
-      title="多行文本自动高度"
-      subTitle="使用属性 autoHeight 使多行文本框自动增高"
-      type="line"
-      padding
-    >
-      <uni-easyinput
-        type="textarea"
-        autoHeight
-        v-model="value"
-        placeholder="请输入内容"
-      ></uni-easyinput>
-    </uni-section>
+  <view class="viewport">
+    <!-- 搜索框 -->
+    <view class="search" @click="onSearch">
+      <view class="input">
+        <text class="icon-search">搜索大理石或安装记录</text>
+      </view>
+    </view>
+    <!-- 分类 -->
+    <view class="categories">
+      <!-- 左侧：一级分类 -->
+      <scroll-view class="primary" scroll-y>
+        <view
+          v-for="(item, index) in stoneTypeListData"
+          :key="item.id"
+          class="item"
+          :class="{ active: index === activeIndex }"
+          @tap="
+            () => {
+              activeIndex = index
+              handelClickType(item.id)
+            }
+          "
+        >
+          <text class="name"> {{ item.name }} </text>
+        </view>
+      </scroll-view>
+      <!-- 右侧：二级分类 -->
+      <scroll-view class="secondary" scroll-y>
+        <!-- 焦点图 -->
+        <XtxSwiper class="banner" :list="bannerList" />
+        <!-- 内容区域 -->
+        <view class="panel">
+          <!-- <view class="title">
+            <text class="name">宠物用品</text>
+            <navigator class="more" hover-class="none">全部</navigator>
+          </view> -->
+          <view class="section">
+            <navigator
+              v-for="stone in Stones"
+              :key="stone.id"
+              class="goods"
+              hover-class="none"
+              :url="`/pages/stone/stone?id=${stone.id}`"
+            >
+              <image class="image" :src="stone.coverImages[0]"></image>
+              <view class="name ellipsis">{{ stone.name }}</view>
+              <!-- <view class="price">
+                <text class="symbol">¥</text>
+                <text class="number">16.00</text>
+              </view> -->
+            </navigator>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
   </view>
 </template>
+<script setup lang="ts">
+import { getHotStones, getStonesByTypeId } from '@/services/stone'
+import { stoneTypeList } from '@/services/stone_types'
+import type { Stone } from '@/types/stone'
+import type { StoneType } from '@/types/stone_types'
+import { onLoad } from '@dcloudio/uni-app'
+import { ref } from 'vue'
+const activeIndex = ref(0)
+const bannerList = ref<Stone[]>([])
+const stoneTypeListData = ref<StoneType[]>([])
+const Stones = ref<Stone[]>([])
+
+const getHotBannerStones = async () => {
+  const res = await getHotStones()
+  bannerList.value = res.data
+}
+
+const getstoneTypes = async () => {
+  const res = await stoneTypeList()
+  stoneTypeListData.value = res.data
+}
+
+const handelClickType = async (id: number) => {
+  const res = await getStonesByTypeId(id)
+  Stones.value = res.data
+}
+
+const onSearch = () => {
+  uni.navigateTo({
+    url: '/pages/search/search',
+  })
+}
+
+onLoad(() => {
+  getHotBannerStones()
+  getstoneTypes()
+})
+</script>
 
 <style lang="scss">
-//
-</style>
-<style lang="scss">
-.uni-mt-5 {
-  margin-top: 5px;
+page {
+  height: 100%;
+  overflow: hidden;
+}
+.viewport {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.search {
+  padding: 0 30rpx 20rpx;
+  background-color: #fff;
+  .input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64rpx;
+    padding-left: 26rpx;
+    color: #8b8b8b;
+    font-size: 28rpx;
+    border-radius: 32rpx;
+    background-color: #f3f4f4;
+  }
+}
+.icon-search {
+  &::before {
+    margin-right: 10rpx;
+  }
+}
+/* 分类 */
+.categories {
+  flex: 1;
+  min-height: 400rpx;
+  display: flex;
+}
+/* 一级分类 */
+.primary {
+  overflow: hidden;
+  width: 180rpx;
+  flex: none;
+  background-color: #f6f6f6;
+  .item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 96rpx;
+    font-size: 26rpx;
+    color: #595c63;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      left: 42rpx;
+      bottom: 0;
+      width: 96rpx;
+      border-top: 1rpx solid #e3e4e7;
+    }
+  }
+  .active {
+    background-color: #fff;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 8rpx;
+      height: 100%;
+      background-color: #27ba9b;
+    }
+  }
+}
+.primary .item:last-child::after,
+.primary .active::after {
+  display: none;
+}
+/* 二级分类 */
+.secondary {
+  background-color: #fff;
+  .carousel {
+    height: 200rpx;
+    margin: 0 30rpx 20rpx;
+    border-radius: 4rpx;
+    overflow: hidden;
+  }
+  .panel {
+    margin: 0 30rpx 0rpx;
+  }
+  .title {
+    height: 60rpx;
+    line-height: 60rpx;
+    color: #333;
+    font-size: 28rpx;
+    border-bottom: 1rpx solid #f7f7f8;
+    .more {
+      float: right;
+      padding-left: 20rpx;
+      font-size: 24rpx;
+      color: #999;
+    }
+  }
+  .more {
+    &::after {
+      font-family: 'erabbit' !important;
+      content: '\e6c2';
+    }
+  }
+  .section {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20rpx 0;
+    .goods {
+      width: 150rpx;
+      margin: 0rpx 30rpx 20rpx 0;
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+      image {
+        width: 150rpx;
+        height: 150rpx;
+      }
+      .name {
+        padding: 5rpx;
+        font-size: 22rpx;
+        color: #333;
+      }
+      .price {
+        padding: 5rpx;
+        font-size: 18rpx;
+        color: #cf4444;
+      }
+      .number {
+        font-size: 24rpx;
+        margin-left: 2rpx;
+      }
+    }
+  }
 }
 </style>

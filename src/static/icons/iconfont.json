@@ -1,0 +1,16 @@
+{
+  "id": "3926194",
+  "name": "stone",
+  "font_family": "iconfont",
+  "css_prefix_text": "stone-",
+  "description": "stone",
+  "glyphs": [
+    {
+      "icon_id": "13053965",
+      "name": "分享",
+      "font_class": "fenxiang",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    }
+  ]
+}

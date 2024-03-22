@@ -103,10 +103,10 @@
 				"selectedIconPath": "static/tabs/category_selected.png"
 			},
 			{
-				"text": "安装记录",
+				"text": "记录",
 				"pagePath": "pages/history/history",
-				"iconPath": "static/tabs/cart_default.png",
-				"selectedIconPath": "static/tabs/cart_selected.png"
+				"iconPath": "static/tabs/work_record.png",
+				"selectedIconPath": "static/tabs/work_record_selected.png"
 			},
 			{
 				"text": "我的",
