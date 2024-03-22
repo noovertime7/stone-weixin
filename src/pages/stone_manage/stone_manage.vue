@@ -13,6 +13,14 @@
         placeholder="请选择大理石分类"
       ></uni-data-select>
     </uni-section>
+    <uni-section title="是否设置为轮播图" type="line" padding>
+      <switch
+        class="switch"
+        color="#27ba9b"
+        @change="onSwitchChange"
+        :checked="formData.hot === 1"
+      />
+    </uni-section>
     <uni-section title="大理石描述" type="line" padding>
       <uni-easyinput
         class="uni-px-5"
@@ -22,6 +30,12 @@
       ></uni-easyinput>
     </uni-section>
     <uni-section title="封面图片" type="line" padding>
+      <uni-notice-bar
+        v-if="member.profile"
+        single
+        show-icon
+        :text="`当前共有封面图片${formData.coverImages.length}张，添加新图片将替换原有图片`"
+      />
       <view class="example-body">
         <uni-file-picker
           :imageStyles="{ width: '25%', height: '86px' }"
@@ -33,6 +47,12 @@
       </view>
     </uni-section>
     <uni-section title="详情图片" type="line" padding>
+      <uni-notice-bar
+        v-if="member.profile"
+        single
+        show-icon
+        :text="`当前共有详情图片${formData.detailImages.length}张，添加新图片将替换原有图片`"
+      />
       <view class="example-body">
         <uni-file-picker
           ref="detailImageRef"
@@ -47,25 +67,38 @@
     </uni-section>
   </view>
   <!-- 提交按钮 -->
-  <button @tap="onSubmit" class="button">添加</button>
+  <button @tap="onSubmit" class="button">{{ query.id ? '修改大理石' : '添加大理石' }}</button>
 </template>
 
 <script lang="ts" setup>
 import { stoneTypeList } from '@/services/stone_types'
 import type { SelectLocalData } from '@/types/global'
 import type { StoneType } from '@/types/stone_types'
-import { createStone } from '@/services/stone'
+import { createStone, getStoneById, updateStone } from '@/services/stone'
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { upload, type image, type StoneformData } from './helper'
+import type { Stone } from '../../types/stone'
+import { useMemberStore } from '@/stores'
 
+const StoneData = ref<Stone>()
+const member = useMemberStore()
 const formData = ref<StoneformData>({
   name: '',
   coverImages: [],
   detailImages: [],
   stoneTypeId: 0,
   description: '',
+  hot: 1,
 })
+
+const query = defineProps<{
+  id: number
+}>()
+
+const onSwitchChange = (ev) => {
+  formData.value.hot = ev.detail.value ? 1 : 2
+}
 
 const StonesTypes = ref<StoneType[]>()
 
@@ -106,8 +139,20 @@ const onDetailImageSelect = (file: any) => {
 const handleStoneTypesChange = () => {}
 
 // 初始化调用(页面显示)
-onShow(() => {
+onShow(async () => {
   GetStoneTypes()
+  if (query.id) {
+    const res = await getStoneById(query.id)
+    StoneData.value = res.data
+    formData.value = {
+      name: StoneData.value.name,
+      coverImages: StoneData.value.coverImages,
+      detailImages: StoneData.value.detailImages,
+      stoneTypeId: StoneData.value.stoneTypeId,
+      description: StoneData.value.description,
+      hot: StoneData.value.hot,
+    }
+  }
 })
 
 const coverImageRef = ref()
@@ -120,6 +165,22 @@ const onSubmit = async () => {
     title: '添加中...',
     mask: true, // 是否显示透明蒙层，防止触摸穿透，默认为 false
   })
+
+  // if (!converImages.value.length || !detailImages.value.length) {
+  //   uni.showModal({
+  //     title: '提示',
+  //     content: '首页图片或详情图片为空，请上传至少一张首页图片和一张详情图片',
+  //     showCancel: false,
+  //     confirmText: '知道了',
+  //     // success: function (res) {
+  //     //   if (res.confirm) {
+  //     //     console.log('用户点击了确认按钮')
+  //     //   }
+  //     // },
+  //   })
+  //   uni.hideLoading()
+  //   return
+  // }
 
   // 上传 converImages
   for (const file of converImages.value) {
@@ -137,15 +198,29 @@ const onSubmit = async () => {
     }
   }
 
-  formData.value.coverImages = coverImageLinks.value
-  formData.value.detailImages = detailImageLinks.value
+  //  代表选取了图片
+  if (converImages.value.length > 0) {
+    formData.value.coverImages = coverImageLinks.value
+  }
 
-  const res = await createStone(formData.value)
-  console.log(res)
+  // 代表选取了图片，此时需要更新
+  if (detailImages.value.length > 0) {
+    formData.value.detailImages = detailImageLinks.value
+  }
 
-  if (res) {
-    uni.showToast({ icon: 'success', title: '添加成功' })
-    clean()
+  if (query.id) {
+    // 更新stone
+    const res = await updateStone(query.id, formData.value)
+    if (res) {
+      uni.showToast({ icon: 'success', title: '更新成功' })
+    }
+  } else {
+    // 新增stone
+    const res = await createStone(formData.value)
+    if (res) {
+      uni.showToast({ icon: 'success', title: '新增成功' })
+      clean()
+    }
   }
 
   uni.hideLoading()
@@ -162,6 +237,7 @@ const clean = () => {
     detailImages: [],
     stoneTypeId: 0,
     description: '',
+    hot: 1,
   }
   detailImageRef.value?.clearFiles()
   coverImageRef.value?.clearFiles()

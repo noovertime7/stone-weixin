@@ -14,7 +14,7 @@ const orderTypes = [
     icon: 'icon-currency',
     url: '/pages/stone_type_list/stone_type_list',
   },
-  { type: 2, text: '添加大理石', icon: 'icon-gift', url: '/pages/stone_add/stone_add' },
+  { type: 2, text: '添加大理石', icon: 'icon-gift', url: '/pages/stone_manage/stone_manage' },
   { type: 3, text: '打卡', icon: 'icon-check', url: '/pages/stone_type_list/stone_type_list' },
   // { type: 4, text: '待评价', icon: 'icon-comment' },
 ]

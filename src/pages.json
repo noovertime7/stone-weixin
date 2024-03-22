@@ -54,9 +54,9 @@
 			}
 		},
 		{
-			"path": "pages/stone_add/stone_add",
+			"path": "pages/stone_manage/stone_manage",
 			"style": {
-				"navigationBarTitleText": "上传大理石"
+				"navigationBarTitleText": "大理石管理"
 			}
 		},
 		{

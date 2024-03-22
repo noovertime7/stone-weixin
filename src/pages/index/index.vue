@@ -5,8 +5,8 @@
     <uni-notice-bar
       show-icon
       text="骏腾石材：联系电话：18605486770"
-      color="#2979FF"
-      background-color="#EAF2FF"
+      color="#00c19e"
+      background-color="#f7f7f7"
       show-get-more
       more-text="马上联系"
       @getmore="makeCall"

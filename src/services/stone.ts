@@ -1,4 +1,4 @@
-import type { StoneformData } from '@/pages/stone_add/helper'
+import type { StoneformData } from '@/pages/stone_manage/helper'
 import type { StringData, PageParams } from '@/types/global'
 import type { PageStone, Stone } from '@/types/stone'
 import { http } from '@/utils/http'
@@ -7,6 +7,14 @@ export const createStone = (data: StoneformData) => {
   return http<StringData>({
     method: 'POST',
     url: `/stone`,
+    data,
+  })
+}
+
+export const updateStone = (id: number, data: StoneformData) => {
+  return http<StringData>({
+    method: 'POST',
+    url: `/stone/${id}/update`,
     data,
   })
 }

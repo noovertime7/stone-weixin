@@ -16,6 +16,7 @@ export type StoneformData = {
   detailImages: string[]
   stoneTypeId: number
   description: string
+  hot: number
 }
 
 export const upload = async (file: image) => {

@@ -6,9 +6,10 @@ import { copyWeixinNum, makeCall } from '@/utils/utils'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
+import { useMemberStore } from '@/stores'
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
-
+const member = useMemberStore()
 // 接收页面参数
 const query = defineProps<{
   id: string
@@ -76,6 +77,12 @@ const openDetailImage = (url: string) => {
     urls: StoneData.value!.detailImages,
   })
 }
+
+const editStone = () => {
+  uni.navigateTo({
+    url: '/pages/stone_manage/stone_manage?id=' + StoneData.value?.id,
+  })
+}
 </script>
 
 <template>
@@ -102,7 +109,12 @@ const openDetailImage = (url: string) => {
           <text class="symbol">¥</text>
           <text class="number">29.90</text>
         </view> -->
-        <view class="name ellipsis">{{ StoneData?.name }} </view>
+        <view class="name ellipsis" style="display: flex; align-items: center"
+          >{{ StoneData?.name }}
+          <!-- ?v-if="member.profile" -->
+          <button size="mini" plain type="primary" @click="editStone">编辑</button>
+        </view>
+
         <view class="desc"> {{ StoneData?.description }} </view>
       </view>
 
