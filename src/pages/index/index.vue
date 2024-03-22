@@ -73,5 +73,29 @@ onLoad(() => {
 </script>
 
 <style lang="scss">
-//
+page {
+  background-color: #f7f7f7;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.scroll-view {
+  flex: 1;
+}
+.back-top {
+  height: 50px; /* 设置元素的高度 */
+  width: 50px; /* 设置元素的宽度 */
+  background-color: #f7f7f7; /* 设置元素的背景颜色 */
+  border-radius: 50%; /* 将元素的边框设置为圆形 */
+  position: fixed; /* 将元素固定在页面上 */
+  bottom: 20px; /* 距离页面底部的距离 */
+  right: 20px; /* 距离页面右侧的距离 */
+  text-align: center; /* 文字居中 */
+  line-height: 50px; /* 行高与元素高度相同，以垂直居中文本 */
+  cursor: pointer; /* 鼠标悬停时显示指示光标 */
+  transition: all 0.3s ease; /* 添加过渡效果 */
+}
+.back-top:hover {
+  background-color: #ccc; /* 悬停时的背景颜色 */
+}
 </style>

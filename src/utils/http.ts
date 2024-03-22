@@ -12,7 +12,7 @@
 
 import { useMemberStore } from '@/stores'
 
-const baseURL = 'http://127.0.0.1:8880/api/v1'
+const baseURL = 'http://192.168.1.135:8880/api/v1'
 
 // 添加拦截器
 const httpInterceptor = {
