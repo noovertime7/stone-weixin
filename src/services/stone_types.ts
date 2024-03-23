@@ -31,9 +31,9 @@ export const updateStoneType = (id: string, name: string) => {
   })
 }
 
-export const stoneTypeList = () => {
+export const stoneTypeList = (withStone: string = '') => {
   return http<StoneType[]>({
     method: 'GET',
-    url: `/stoneTypes`,
+    url: `/stoneTypes?withStone=${withStone}`,
   })
 }

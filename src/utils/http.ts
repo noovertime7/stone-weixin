@@ -11,8 +11,7 @@
  */
 
 import { useMemberStore } from '@/stores'
-
-const baseURL = 'http://192.168.1.135:8880/api/v1'
+import { baseURL } from '@/utils/env_weixin_helper'
 
 // 添加拦截器
 const httpInterceptor = {
@@ -89,7 +88,7 @@ export const http = <T>(options: UniApp.RequestOptions) => {
       // 响应失败
       fail(err) {
         uni.showToast({
-          icon: 'none',
+          icon: 'error',
           title: err.errMsg,
         })
         reject(err)

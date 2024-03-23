@@ -1,123 +1,135 @@
+<template>
+  <view class="address">
+    <view class="container">
+      <button bindtap="getLocation">打开地图选择位置</button>
+      <view>
+        <view>位置名称:{{ name }}</view>
+        <view>详细地址:{{ address }}</view>
+        <view>纬度:{{ latitude }}</view>
+        <view>经度:{{ longitude }}</view>
+      </view>
+    </view>
+  </view>
+  <view @click="clickSite">点击选择位置</view>
+</template>
+
 <script>
 export default {
+  components: {
+    name: '',
+    address: '',
+    latitude: '',
+    longitude: '',
+  },
   data() {
     return {
-      imageStyles: {
-        width: 64,
-        height: 64,
-        border: {
-          radius: '50%',
-        },
+      pageNum: 1,
+      data: {
+        name: '',
+        address: '',
+        latitude: '',
+        longitude: '',
       },
-      listStyles: {
-        // 是否显示边框
-        border: true,
-        // 是否显示分隔线
-        dividline: true,
-        // 线条样式
-        borderStyle: {
-          width: 1,
-          color: 'blue',
-          style: 'dashed',
-          radius: 2,
-        },
-      },
-      fileLists: [
-        {
-          url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/shuijiao-small.jpg',
-          extname: 'png',
-          name: 'shuijiao.png',
-        },
-        {
-          url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/shuijiao-small.jpg',
-          extname: 'png',
-          name: 'uniapp-logo.png',
-        },
-        {
-          url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/shuijiao-small.jpg',
-          extname: 'png',
-          name: 'shuijiao.png',
-        },
-      ],
     }
   },
-  methods: {},
+  // 页面加载
+  onLoad(e) {
+    uni.hideTabBar() //不让底部显示tab选项
+    this.getData()
+  },
+  // 页面显示
+  onShow() {},
+  // 方法
+  methods: {
+    clickSite() {
+      // 所在地址
+      var _this = this
+      wx.chooseLocation({
+        success: function (res) {
+          var name = res.name
+          var address = res.address
+          var latitude = res.latitude
+          var longitude = res.longitude
+          _this.form.city = res.address
+          _this.form.city1 = res.address
+          console.log(name, address, latitude, longitude, '158')
+        },
+        complete(res) {
+          // 点击确定完成以后-进入对应的页面
+          console.log(res, '161')
+
+          if (res.errMsg == 'chooseLocation:fail cancel') {
+            console.log(111)
+          } else {
+            console.log(22)
+          }
+        },
+      })
+    },
+    //获取数据
+    getData() {
+      var _this = this
+      wx.chooseLocation({
+        success: function (res) {
+          var name = res.name
+          var address = res.address
+          var latitude = res.latitude
+          var longitude = res.longitude
+
+          console.log(name, address, latitude, longitude, '58')
+        },
+        complete(r) {
+          // 点击确定完成以后-进入对应的页面
+          console.log(r, '71')
+        },
+      })
+    },
+    //获取列表数据
+    getListData() {
+      this.$.ajax(
+        'POST',
+        '/xxxxx/xxxxx',
+        {
+          page: this.pageNum,
+        },
+        (res) => {
+          if (res) {
+            if (this.pageNum == 1) {
+              this.list = res.data
+            } else {
+              this.list = this.list.concat(res.data)
+              if (res.data.length === 0) {
+                this.pageNum--
+              }
+            }
+          }
+          uni.stopPullDownRefresh()
+        },
+      )
+    },
+  },
+  // 计算属性
+  computed: {},
+  // 侦听器
+  watch: {},
+  // 页面隐藏
+  onHide() {},
+  // 页面卸载
+  onUnload() {},
+  // 触发下拉刷新
+  onPullDownRefresh() {
+    this.pageNum = 1
+    // this.getListData()
+  },
+  // 页面上拉触底事件的处理函数
+  onReachBottom() {
+    this.pageNum++
+    // this.getListData()
+  },
 }
 </script>
 
-<template>
-  <view class="container">
-    <uni-card :is-shadow="false" is-full>
-      <text class="uni-h6"
-        >文件选择上传组件，可以选择图片、视频等任意文件并上传到当前绑定的服务空间。</text
-      >
-    </uni-card>
-    <uni-section title="只选择图片" type="line">
-      <view class="example-body">
-        <uni-file-picker limit="9" title="最多选择9张图片"></uni-file-picker>
-      </view>
-    </uni-section>
-    <uni-section title="只选择视频" type="line">
-      <view class="example-body">
-        <uni-file-picker limit="9" file-mediatype="video" title="最多选择9个视频"></uni-file-picker>
-      </view>
-    </uni-section>
-
-    <!-- #ifdef H5 || MP-WEIXIN -->
-    <uni-section title="选择任意文件" type="line">
-      <view class="example-body">
-        <uni-file-picker limit="5" file-mediatype="all" title="最多选择5个文件"></uni-file-picker>
-      </view>
-    </uni-section>
-    <!-- #endif -->
-
-    <uni-section title="自定义图片大小" type="line">
-      <view class="example-body custom-image-box">
-        <text class="text">选择头像</text>
-        <uni-file-picker
-          limit="1"
-          :del-icon="false"
-          disable-preview
-          :imageStyles="imageStyles"
-          file-mediatype="image"
-          >选择</uni-file-picker
-        >
-      </view>
-    </uni-section>
-
-    <uni-section title="自定义图片大小" type="line">
-      <view class="example-body">
-        <uni-file-picker
-          readonly
-          :value="fileLists"
-          :imageStyles="imageStyles"
-          file-mediatype="image"
-        >
-        </uni-file-picker>
-        <uni-file-picker readonly :value="fileLists" :listStyles="listStyles" file-mediatype="all">
-        </uni-file-picker>
-      </view>
-    </uni-section>
-  </view>
-</template>
-
-<style lang="scss">
-.example-body {
-  padding: 10px;
-  padding-top: 0;
-}
-
-.custom-image-box {
-  /* #ifndef APP-NVUE */
-  display: flex;
-  /* #endif */
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.text {
-  font-size: 14px;
-  color: #333;
+<style lang="scss" scoped>
+.address {
 }
 </style>

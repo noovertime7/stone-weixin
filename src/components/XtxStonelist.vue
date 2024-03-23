@@ -2,7 +2,7 @@
   <view class="scroll-row-item course course-one" @click="openDetail">
     <view class="position-relative">
       <image :src="stone.coverImages[0]"></image>
-      <view class="text-white font-sm">测试</view>
+      <view class="text-white font-sm">热门</view>
     </view>
     <view class="flex flex-column flex-shrink">
       <text class="text-ellipsis font-md">{{ stone.name }}</text>

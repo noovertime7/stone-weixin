@@ -42,6 +42,13 @@ export const getStoneById = (id: number | string) => {
   })
 }
 
+export const deleteStoneById = (id: number | string) => {
+  return http<Stone>({
+    method: 'DELETE',
+    url: `/stone/${id}`,
+  })
+}
+
 export const getStonesByTypeId = (tid: number | string) => {
   return http<Stone[]>({
     method: 'GET',

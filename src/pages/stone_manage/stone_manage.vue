@@ -31,7 +31,7 @@
     </uni-section>
     <uni-section title="封面图片" type="line" padding>
       <uni-notice-bar
-        v-if="member.profile"
+        v-if="member.profile && query.id"
         single
         show-icon
         :text="`当前共有封面图片${formData.coverImages.length}张，添加新图片将替换原有图片`"
@@ -48,7 +48,7 @@
     </uni-section>
     <uni-section title="详情图片" type="line" padding>
       <uni-notice-bar
-        v-if="member.profile"
+        v-if="member.profile && query.id"
         single
         show-icon
         :text="`当前共有详情图片${formData.detailImages.length}张，添加新图片将替换原有图片`"
@@ -154,7 +154,7 @@ onShow(async () => {
     }
   }
 })
-
+const uploadUrl = 'https://stone.yunxue521.top/api/v1/upload'
 const coverImageRef = ref()
 const detailImageRef = ref()
 const coverImageLinks = ref<string[]>([])
@@ -184,7 +184,7 @@ const onSubmit = async () => {
 
   // 上传 converImages
   for (const file of converImages.value) {
-    const resp = await upload(file)
+    const resp = await upload(uploadUrl, file)
     if (resp) {
       coverImageLinks.value.push(resp.data[0])
     }
@@ -192,7 +192,7 @@ const onSubmit = async () => {
 
   // 上传 detailImages
   for (const file of detailImages.value) {
-    const resp = await upload(file)
+    const resp = await upload(uploadUrl, file)
     if (resp) {
       detailImageLinks.value.push(resp.data[0])
     }
@@ -212,13 +212,13 @@ const onSubmit = async () => {
     // 更新stone
     const res = await updateStone(query.id, formData.value)
     if (res) {
-      uni.showToast({ icon: 'success', title: '更新成功' })
+      uni.showToast({ icon: 'success', title: '更新成功', duration: 2000 })
     }
   } else {
     // 新增stone
     const res = await createStone(formData.value)
     if (res) {
-      uni.showToast({ icon: 'success', title: '新增成功' })
+      uni.showToast({ icon: 'success', title: '新增成功', duration: 2000 })
       clean()
     }
   }

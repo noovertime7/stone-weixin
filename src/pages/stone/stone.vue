@@ -1,90 +1,3 @@
-// src/pages/goods/goods.vue
-<script setup lang="ts">
-import { getSameStones, getStoneById } from '@/services/stone'
-import type { Stone } from '@/types/stone'
-import { copyWeixinNum, makeCall } from '@/utils/utils'
-import { onLoad } from '@dcloudio/uni-app'
-import { ref } from 'vue'
-import { onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
-import { useMemberStore } from '@/stores'
-// 获取屏幕边界到安全区域距离
-const { safeAreaInsets } = uni.getSystemInfoSync()
-const member = useMemberStore()
-// 接收页面参数
-const query = defineProps<{
-  id: string
-}>()
-const StoneData = ref<Stone>()
-const SameStones = ref<Stone[]>([])
-const getStoneData = async () => {
-  if (query.id) {
-    const res = await getStoneById(query.id)
-    StoneData.value = res.data
-  }
-}
-const getSameStonesData = async () => {
-  if (query.id) {
-    const res = await getSameStones(query.id)
-    SameStones.value = res.data
-  }
-}
-
-/** 激活“分享给好友” */
-onShareAppMessage((options: Page.ShareAppMessageOption): Page.CustomShareContent => {
-  let pages = getCurrentPages() //获取当前页面栈的信息
-  let currentPage = pages[pages.length - 1] //获取到当前页面栈中最后一个页面的索引
-
-  let obj: Page.CustomShareContent = {
-    title: `${StoneData.value?.name}`,
-    desc: `${StoneData.value?.description}`,
-    path: `${currentPage.route}?id=${query.id}`,
-  }
-
-  return obj
-})
-/** 激活“分享到朋友圈”， 注意：需要先激活“分享给好友” */
-onShareTimeline((): Page.ShareTimelineContent => {
-  return {
-    title: `${StoneData.value?.name}`,
-    query: `id=${query.id}`,
-  }
-})
-
-onLoad(() => {
-  getStoneData()
-  getSameStonesData()
-})
-
-// 轮播图变化时
-const currentIndex = ref(0)
-const onChange: UniHelper.SwiperOnChange = (ev) => {
-  currentIndex.value = ev.detail.current
-}
-
-// 点击图片时
-const onTapImage = (url: string) => {
-  // 大图预览
-  uni.previewImage({
-    current: url,
-    urls: StoneData.value!.coverImages,
-  })
-}
-
-const openDetailImage = (url: string) => {
-  // 大图预览
-  uni.previewImage({
-    current: url,
-    urls: StoneData.value!.detailImages,
-  })
-}
-
-const editStone = () => {
-  uni.navigateTo({
-    url: '/pages/stone_manage/stone_manage?id=' + StoneData.value?.id,
-  })
-}
-</script>
-
 <template>
   <scroll-view scroll-y class="viewport">
     <!-- 基本信息 -->
@@ -111,8 +24,10 @@ const editStone = () => {
         </view> -->
         <view class="name ellipsis" style="display: flex; align-items: center"
           >{{ StoneData?.name }}
-          <!-- ?v-if="member.profile" -->
-          <button size="mini" plain type="primary" @click="editStone">编辑</button>
+          <view class="m-2" v-if="member.profile">
+            <button class="m-2" size="mini" plain type="primary" @click="editStone">编辑</button>
+            <button class="m-2" size="mini" plain type="warn" @click="handleDelete">删除</button>
+          </view>
         </view>
 
         <view class="desc"> {{ StoneData?.description }} </view>
@@ -206,6 +121,118 @@ const editStone = () => {
     </view>
   </view>
 </template>
+
+<script setup lang="ts">
+import { deleteStoneById, getSameStones, getStoneById } from '@/services/stone'
+import type { Stone } from '@/types/stone'
+import { copyWeixinNum, makeCall } from '@/utils/utils'
+import { onLoad } from '@dcloudio/uni-app'
+import { ref } from 'vue'
+import { onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
+import { useMemberStore } from '@/stores'
+// 获取屏幕边界到安全区域距离
+const { safeAreaInsets } = uni.getSystemInfoSync()
+const member = useMemberStore()
+// 接收页面参数
+const query = defineProps<{
+  id: string
+}>()
+const StoneData = ref<Stone>()
+const SameStones = ref<Stone[]>([])
+const getStoneData = async () => {
+  if (query.id) {
+    const res = await getStoneById(query.id)
+    StoneData.value = res.data
+  }
+}
+const getSameStonesData = async () => {
+  if (query.id) {
+    const res = await getSameStones(query.id)
+    SameStones.value = res.data
+  }
+}
+
+/** 激活“分享给好友” */
+onShareAppMessage((options: Page.ShareAppMessageOption): Page.CustomShareContent => {
+  let pages = getCurrentPages() //获取当前页面栈的信息
+  let currentPage = pages[pages.length - 1] //获取到当前页面栈中最后一个页面的索引
+
+  let obj: Page.CustomShareContent = {
+    title: `${StoneData.value?.name}`,
+    desc: `${StoneData.value?.description}`,
+    path: `${currentPage.route}?id=${query.id}`,
+  }
+
+  return obj
+})
+/** 激活“分享到朋友圈”， 注意：需要先激活“分享给好友” */
+onShareTimeline((): Page.ShareTimelineContent => {
+  return {
+    title: `${StoneData.value?.name}`,
+    query: `id=${query.id}`,
+  }
+})
+
+const handleDelete = async () => {
+  uni.showModal({
+    title: '提示',
+    content: '您确定要删除此条数据吗？',
+    showCancel: true,
+    cancelText: '取消', // 取消按钮的文字
+    confirmText: '确认', // 确认按钮的文字
+    confirmColor: '#f55850',
+    cancelColor: '#39B54A',
+    success: async (res) => {
+      if (res.confirm) {
+        const res = await deleteStoneById(StoneData.value!.id)
+        if (res) {
+          uni.showToast({
+            title: '删除成功!',
+            icon: 'success',
+          })
+          uni.navigateBack({
+            delta: 1,
+          })
+        }
+      }
+    },
+  })
+}
+
+onLoad(() => {
+  getStoneData()
+  getSameStonesData()
+})
+
+// 轮播图变化时
+const currentIndex = ref(0)
+const onChange: UniHelper.SwiperOnChange = (ev) => {
+  currentIndex.value = ev.detail.current
+}
+
+// 点击图片时
+const onTapImage = (url: string) => {
+  // 大图预览
+  uni.previewImage({
+    current: url,
+    urls: StoneData.value!.coverImages,
+  })
+}
+
+const openDetailImage = (url: string) => {
+  // 大图预览
+  uni.previewImage({
+    current: url,
+    urls: StoneData.value!.detailImages,
+  })
+}
+
+const editStone = () => {
+  uni.navigateTo({
+    url: '/pages/stone_manage/stone_manage?id=' + StoneData.value?.id,
+  })
+}
+</script>
 
 <style lang="scss">
 page {

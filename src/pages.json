@@ -24,7 +24,7 @@
 			}
 		},
 		{
-			"path": "pages/history/history",
+			"path": "pages/record/record",
 			"style": {
 				"navigationBarTitleText": "安装历史"
 			}
@@ -64,19 +64,31 @@
 			"style": {
 				"navigationBarTitleText": "大理石详情"
 			}
-		},{
-      "path" : "pages/search/search",
-      "style" :{
-          "navigationBarTitleText": "搜索大理石"
-        }
-      },
-      {
-        "path" : "pages/search_result/search_result",
-        "style" :{
-            "navigationBarTitleText": "搜索大理石"
-          }
-        }
+		},
+		{
+			"path": "pages/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索大理石"
+			}
+		},
+		{
+			"path": "pages/search_result/search_result",
+			"style": {
+				"navigationBarTitleText": "搜索大理石"
+			}
+		},
+		{
+			"path": "pages/record_manage/record_manage",
+			"style": {
+				"navigationBarTitleText": "记录管理"
+			}
+		}
 	],
+	"permission": {
+		"scope.userLocation": {
+			"desc": "你的位置信息将用于小程序位置接口的效果展示" // 高速公路行驶持续后台定位
+		}
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
@@ -104,7 +116,7 @@
 			},
 			{
 				"text": "记录",
-				"pagePath": "pages/history/history",
+				"pagePath": "pages/record/record",
 				"iconPath": "static/tabs/work_record.png",
 				"selectedIconPath": "static/tabs/work_record_selected.png"
 			},
