@@ -8,7 +8,7 @@ if (!env) {
   console.error('获取运行环境失败!')
 }
 
-const baseApi = {
+const apis = {
   // 开发版
   develop: 'http://192.168.1.135:8880',
   // 体验版
@@ -18,4 +18,5 @@ const baseApi = {
 }
 
 // request请求baseURL
-export const baseURL = baseApi[env] + '/api/v1'
+export const baseURL = apis[env] + '/api/v1'
+export const baseAPI = apis[env]

@@ -1,75 +1,62 @@
 <template>
-  <view>
-    <view><button @click="getLocation">获取位置</button></view>
-    <view>
-      <button @click="goHomeSquare">打开位置</button>
-    </view>
+  <view class="data-pickerview">
+    xx
+    <uni-data-picker
+      :localdata="items"
+      popup-title="请选择班级"
+      @change="onchange"
+      @nodeclick="onnodeclick"
+    ></uni-data-picker>
   </view>
 </template>
 
 <script>
-const QQMapWX = require('../../static/public/qqmap-wx-jssdk')
-//腾讯地图接口文件
-
-// 实例化API核心key是腾讯地图秘钥
-var qqmapsdk = new QQMapWX({
-  key: 'FPJBZ-SNUKL-TLTPZ-EVHAB-QONYF-UXBKK', // 必填
-})
-
 export default {
   data() {
     return {
-      longitude: '',
-      latitude: '',
-      scale: 8,
-      addressurl: '/pages/test/index',
+      items: [
+        {
+          text: ' 测试',
+          value: 1,
+          children: [
+            {
+              text: '123',
+              value: 1,
+            },
+            {
+              text: '123454',
+              value: 3,
+            },
+          ],
+        },
+      ],
     }
   },
-  onShow() {
-    this.getLocation()
-  },
   methods: {
-    goHomeSquare() {
-      uni.chooseLocation({
-        success: function (res) {
-          console.log('chooseLocation', res)
-          console.log('位置名称：' + res.name)
-          console.log('详细地址：' + res.address)
-          console.log('纬度：' + res.latitude)
-          console.log('经度：' + res.longitude)
-        },
-      })
+    onchange(e) {
+      const value = e.detail.value
     },
-    getLocation() {
-      uni.getLocation({
-        success: function (res) {
-          this.longitude = res.longitude
-          this.latitude = res.latitude
-          console.log(res.longitude)
-          console.log(res.latitude)
-
-          qqmapsdk.reverseGeocoder({
-            //腾讯地图接口
-            location: {
-              latitude: res.latitude,
-              longitude: res.longitude,
-            },
-            success(res) {
-              console.log('res', res)
-            },
-            fail: (e) => {
-              console.log('error:', e)
-            },
-          })
-        },
-        fail: (res) => {
-          console.log('res fail', res)
-        },
-      })
-    },
+    onnodeclick(node) {},
   },
 }
 </script>
+<style>
+.title {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 20px 0 5px 0;
+}
 
-<style></style>
-./qqmap-wx-jssdk.min.js ../../../public/qqmap-wx-jssdk ../../static/public/qqmap-wx-jssdk.js
+.data-pickerview {
+  height: 200px;
+  border: 1px #e5e5e5 solid;
+}
+
+.popper__arrow {
+  top: -6px;
+  left: 50%;
+  margin-right: 3px;
+  border-top-width: 0;
+  border-bottom-color: #ebeef5;
+}
+</style>

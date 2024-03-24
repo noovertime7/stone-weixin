@@ -1,3 +1,5 @@
+import { baseAPI } from '@/utils/env_weixin_helper'
+
 export type UploadResponse = {
   code: number
   data: string[]
@@ -19,10 +21,12 @@ export type StoneformData = {
   hot: number
 }
 
-export const upload = async (url: string, file: image) => {
+const uploadUrl = `${baseAPI}/api/v1/upload`
+
+export const upload = async (file: image) => {
   return new Promise<UploadResponse | null>((resolve, reject) => {
     uni.uploadFile({
-      url: url,
+      url: uploadUrl,
       filePath: file.tempFilePath,
       name: 'file',
       success: (res) => {

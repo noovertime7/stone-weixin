@@ -154,7 +154,7 @@ onShow(async () => {
     }
   }
 })
-const uploadUrl = 'https://stone.yunxue521.top/api/v1/upload'
+
 const coverImageRef = ref()
 const detailImageRef = ref()
 const coverImageLinks = ref<string[]>([])
@@ -184,7 +184,7 @@ const onSubmit = async () => {
 
   // 上传 converImages
   for (const file of converImages.value) {
-    const resp = await upload(uploadUrl, file)
+    const resp = await upload(file)
     if (resp) {
       coverImageLinks.value.push(resp.data[0])
     }
@@ -192,7 +192,7 @@ const onSubmit = async () => {
 
   // 上传 detailImages
   for (const file of detailImages.value) {
-    const resp = await upload(uploadUrl, file)
+    const resp = await upload(file)
     if (resp) {
       detailImageLinks.value.push(resp.data[0])
     }

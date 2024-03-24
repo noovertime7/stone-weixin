@@ -15,7 +15,7 @@ const orderTypes = [
     url: '/pages/stone_type_list/stone_type_list',
   },
   { type: 2, text: '添加大理石', icon: 'icon-gift', url: '/pages/stone_manage/stone_manage' },
-  { type: 3, text: '打卡', icon: 'icon-check', url: '/pages/stone_type_list/stone_type_list' },
+  { type: 3, text: '打卡', icon: 'icon-check', url: '/pages/record_manage/record_manage' },
   // { type: 4, text: '待评价', icon: 'icon-comment' },
 ]
 
@@ -73,7 +73,7 @@ const onScrolltolower = () => {
       </navigator> -->
     </view>
     <!-- 我的订单 -->
-    <view class="orders" v-if="memberStore.profile">
+    <view class="orders">
       <view class="title">
         大理石管理
         <!-- <navigator class="navigator" url="/pagesOrder/list/list?type=0" hover-class="none">
