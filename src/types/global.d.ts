@@ -47,3 +47,8 @@ export type SelectLocalData = {
   text: string
   value: string | number
 }
+
+export type Common = {
+  created_at: string
+  updated_at: string
+}

@@ -22,7 +22,6 @@ const getHomeGoodsGuessLikeData = async () => {
   const res = await pageStone(pageParams)
   // 数组追加
   guessList.value.push(...res.data.list)
-  console.log(pageParams.page, pageParams.page < res.data.total)
 
   // 分页条件
   if (pageParams.page < res.data.total && res.data.list.length > 0) {

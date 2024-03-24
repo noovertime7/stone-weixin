@@ -1,5 +1,5 @@
 <template>
-  <view class="navbar" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
+  <view class="navbar">
     <!-- <view>
       <SearchBar :inputData="query.keyword" @click="backSearch"></SearchBar>
     </view> -->
@@ -29,15 +29,14 @@
 </template>
 
 <script lang="ts" setup>
-import SearchBar from '@/components/XtxSearchBar.vue'
-import { onLoad, onShow } from '@dcloudio/uni-app'
+import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-const { safeAreaInsets } = uni.getSystemInfoSync()
 import type { PageParams } from '@/types/global'
 import XtxTab from '@/components/XtxTab.vue'
 import type { Stone } from '../../types/stone'
 import { pageStone } from '@/services/stone'
 import XtxStonelist from '@/components/XtxStonelist.vue'
+
 // 接收页面参数
 const query = defineProps<{
   keyword: string

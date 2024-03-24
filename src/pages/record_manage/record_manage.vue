@@ -40,7 +40,7 @@
         <uni-easyinput
           type="textarea"
           v-model="formData.description"
-          placeholder="请输入安装详情"
+          placeholder="请输入安装详情,自动生成:在xxx施工,石材:xxx"
         />
       </view>
     </uni-section>
@@ -190,6 +190,7 @@ const getStoneTreeData = async () => {
 }
 
 const clean = () => {
+  buildAddress()
   video.value = []
   detailImages.value = []
   formData.value = {
@@ -207,8 +208,7 @@ const clean = () => {
   videoRef.value?.clearFiles()
 }
 
-onLoad(async () => {
-  getStoneTreeData()
+const buildAddress = async () => {
   const l = await getLocationAndReverseGeocode()
   const address = await getAddressByLocation(l)
 
@@ -216,6 +216,11 @@ onLoad(async () => {
   formData.value.location = address.recommendlocation
   formData.value.latitude = address.latitude
   formData.value.longitude = address.longitude
+}
+
+onLoad(async () => {
+  getStoneTreeData()
+  buildAddress()
 })
 </script>
 
