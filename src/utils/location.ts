@@ -72,6 +72,7 @@ export const openMap = (): Promise<address> => {
 export const getAddressByLocation = (l: MyLocation): Promise<address> => {
   return new Promise((resolve, reject) => {
     qqmapsdk.reverseGeocoder({
+      sig: 'DABsgAELCBJvuZsGLUp6zH56YHnwWvLF',
       //腾讯地图接口
       location: {
         latitude: l.latitude,

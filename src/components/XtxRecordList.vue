@@ -5,12 +5,15 @@
       <view class="text-white font-sm">{{ record.stoneName }}</view>
     </view>
     <view class="flex flex-column flex-shrink">
-      <view>
-        <uni-icons type="location" size="20"></uni-icons>
+      <view class="flex align-center">
+        <uni-icons type="calendar" size="15"></uni-icons>
+        <text class="text-ellipsis font-sm"> {{ formatYearMonth(record.created_at) }}</text>
+      </view>
+      <text class="description">{{ record.description }}</text>
+      <view class="flex align-center mt-1 text-light-muted">
+        <uni-icons type="location" size="20" color="#A9A5A0"></uni-icons>
         <text class="text-ellipsis font-sm"> {{ record.location }}</text>
       </view>
-      <text class="text-ellipsis font-sm m-2"> {{ formatDate(record.created_at) }}</text>
-      <text class="text-ellipsis font-sm m-2">{{ record.description }}</text>
       <view class="flex flex-1 align-end">
         <uni-tag text="视频" inverted type="primary" circle v-if="record.video" size="mini" />
         <uni-tag
@@ -30,7 +33,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Record } from '../types/record_d'
-import { formatDate } from '@/utils/format.js'
+import { formatYearMonth } from '@/utils/format.js'
 // const openDetail = () => {
 //   let params = `id=${item.id}`;
 
@@ -93,10 +96,20 @@ const tag = ref(props.tag)
 .course-one image,
 .course-one > view:first-child {
   width: 300rpx;
-  height: 170rpx;
+  height: 180rpx;
   flex-shrink: 1;
 }
 .course-one > view:last-child {
   width: 400rpx;
+}
+
+.description {
+  margin-top: 5rpx; /* 调整 xxx 和 name 之间的间距 */
+  font-size: 24rpx; /* 适当调整 description 的字体大小 */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 </style>

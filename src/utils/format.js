@@ -52,6 +52,15 @@ export const formatDate = (time) => {
   }
 }
 
+export const formatYearMonth = (time) => {
+  if (time !== null && time !== '') {
+    var date = new Date(time)
+    return formatTimeToStr(date, 'yyyy年MM月dd日')
+  } else {
+    return ''
+  }
+}
+
 export const filterDict = (value, options) => {
   const rowLabel = options && options.filter((item) => item.value === value)
   return rowLabel && rowLabel[0] && rowLabel[0].label
