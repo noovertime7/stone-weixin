@@ -17,3 +17,17 @@ export const pageRecord = (data: PageParams) => {
     data,
   })
 }
+
+export const getRecordById = (id: number | string) => {
+  return http<Record>({
+    method: 'GET',
+    url: `/record/${id}`,
+  })
+}
+
+export const deleteRecordById = (id: number | string) => {
+  return http<Record>({
+    method: 'DELETE',
+    url: `/record/${id}`,
+  })
+}
