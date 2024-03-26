@@ -44,6 +44,11 @@
         />
       </view>
     </uni-section>
+    <uni-section title="安装时间(自动选择)" type="line" padding style="height: calc(100vh - 100px)">
+      <view>
+        <uni-datetime-picker type="date" :clear-icon="false" v-model="formData.date" />
+      </view>
+    </uni-section>
     <uni-section title="位置(自动定位)" type="line" class="section" padding>
       <uni-icons type="map" size="25" @click="Map" color="#2979ff">
         <text style="color: #2979ff; font-size: medium"> 从地图中选择 </text>
@@ -74,6 +79,7 @@ import { stoneTypeList } from '../../services/stone_types'
 import { upload } from '../stone_manage/helper'
 import type { image } from '../stone_manage/helper'
 import { createRecord } from '../../services/record'
+import { MyformatDate } from '@/utils/format.js'
 
 const detailImageRef = ref()
 const onchange = (e) => {
@@ -89,7 +95,11 @@ const formData = ref<Record>({
   latitude: 0,
   description: '',
   detailedlocation: '',
+  date: MyformatDate(new Date(), 'yyyy-mm-dd'),
 })
+
+console.log("MyformatDate(new Date(), 'yyyy-mm-dd')", MyformatDate(new Date(), 'yyyy-mm-dd'))
+
 const onSubmit = async () => {
   // 显示 Loading
   uni.showLoading({

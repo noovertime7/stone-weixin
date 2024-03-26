@@ -11,6 +11,7 @@ export type Record = Common & {
   description: string
   longitude: number
   latitude: number
+  date?: string
 }
 
 export type PageRecord = {

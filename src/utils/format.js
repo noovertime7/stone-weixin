@@ -52,13 +52,34 @@ export const formatDate = (time) => {
   }
 }
 
-export const formatYearMonth = (time) => {
+export const formatYearMonth = (time, pattern = 'yyyy年MM月dd日') => {
   if (time !== null && time !== '') {
     var date = new Date(time)
-    return formatTimeToStr(date, 'yyyy年MM月dd日')
+    return formatTimeToStr(date, pattern)
   } else {
     return ''
   }
+}
+
+export function MyformatDate(date, format) {
+  const year = date.getFullYear()
+  let month = date.getMonth() + 1 // 月份从0开始，所以要加1
+  let day = date.getDate()
+
+  // 如果月份或日期小于10，则在前面补0
+  if (month < 10) {
+    month = '0' + month
+  }
+  if (day < 10) {
+    day = '0' + day
+  }
+
+  // 替换格式字符串中的年、月、日部分
+  format = format.replace('yyyy', year)
+  format = format.replace('mm', month)
+  format = format.replace('dd', day)
+
+  return format
 }
 
 export const filterDict = (value, options) => {
