@@ -2,7 +2,7 @@
   <scroll-view scroll-y class="viewport">
     <!-- 基本信息 -->
     <view class="goods">
-      <XtxVideo :url="RecordData?.video"></XtxVideo>
+      <XtxVideo :url="RecordData?.video" v-if="RecordData?.video"></XtxVideo>
       <!--    视频-->
       <!-- <view class="preview"    enable-danmu danmu-btn controls></view>>
         <video :src="RecordData?.video"></video>
@@ -17,7 +17,7 @@
         <view class="name ellipsis" style="display: flex; align-items: center"
           >{{ RecordData?.stoneName }}
           <view class="m-2" v-if="member.profile">
-            <button class="m-2" size="mini" plain type="primary" @click="editStone">编辑</button>
+            <!-- <button class="m-2" size="mini" plain type="primary" @click="editStone">编辑</button> -->
             <button class="m-2" size="mini" plain type="warn" @click="handleDelete">删除</button>
           </view>
         </view>
@@ -50,6 +50,10 @@
       <view class="content">
         <view class="properties">
           <view class="item">
+            <text class="label">安装时间</text>
+            <text class="value">{{ RecordData?.date }}</text>
+          </view>
+          <view class="item">
             <text class="label">地址</text>
             <text class="value">{{ RecordData?.location }}次</text>
           </view>
@@ -58,8 +62,13 @@
             <text class="value">{{ RecordData?.detailedlocation }}次</text>
           </view>
         </view>
+        <view>
+          <XtxMap :latitude="RecordData?.latitude" :longitude="RecordData?.longitude" />
+        </view>
 
-        <!-- 图片详情 -->
+        <view class="title">
+          <text>安装展示</text>
+        </view>
         <view v-for="(item, index) in RecordData?.images" :key="index">
           <image mode="widthFix" :src="item" @tap="openDetailImage(item)"></image
         ></view>
@@ -137,12 +146,12 @@
 <script setup lang="ts">
 import { deleteRecordById, getRecordById } from '@/services/record'
 import XtxVideo from '@/components/XtxVideo.vue'
+import XtxMap from '@/components/XtxMap.vue'
 import type { Record } from '@/types/record_d'
 import { copyWeixinNum, makeCall } from '@/utils/utils'
 import { onLoad, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { useMemberStore } from '@/stores'
-import { formatYearMonth } from '@/utils/format.js'
 import type { Stone } from '../../types/stone'
 import { getSameStones } from '../../services/stone'
 
@@ -224,9 +233,7 @@ onShareAppMessage((options: Page.ShareAppMessageOption): Page.CustomShareContent
   let currentPage = pages[pages.length - 1] //获取到当前页面栈中最后一个页面的索引
 
   let obj: Page.CustomShareContent = {
-    title: `[${RecordData.value?.location}]${RecordData.value?.stoneName}${formatYearMonth(
-      RecordData.value?.created_at,
-    )}安装记录`,
+    title: `[${RecordData.value?.location}]${RecordData.value?.stoneName}${RecordData.value?.date}安装记录`,
     desc: `${RecordData.value?.description}`,
     path: `${currentPage.route}?id=${query.id}`,
   }
@@ -236,9 +243,7 @@ onShareAppMessage((options: Page.ShareAppMessageOption): Page.CustomShareContent
 /** 激活“分享到朋友圈”， 注意：需要先激活“分享给好友” */
 onShareTimeline((): Page.ShareTimelineContent => {
   return {
-    title: `[${RecordData.value?.location}]${RecordData.value?.stoneName}${formatYearMonth(
-      RecordData.value?.created_at,
-    )}安装记录`,
+    title: `[${RecordData.value?.location}]${RecordData.value?.stoneName}${RecordData.value?.date}安装记录`,
     query: `id=${query.id}`,
   }
 })

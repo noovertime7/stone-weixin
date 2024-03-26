@@ -7,7 +7,7 @@
     <view class="flex flex-column flex-shrink">
       <view class="flex align-center">
         <uni-icons type="calendar" size="15"></uni-icons>
-        <text class="text-ellipsis font-sm"> {{ formatYearMonth(record.created_at) }}</text>
+        <text class="text-ellipsis font-sm"> {{ record.date }}</text>
       </view>
       <text class="description">{{ record.description }}</text>
       <view class="flex align-center mt-1 text-light-muted">
@@ -33,7 +33,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Record } from '../types/record_d'
-import { formatYearMonth } from '@/utils/format.js'
 // const openDetail = () => {
 //   let params = `id=${item.id}`;
 
