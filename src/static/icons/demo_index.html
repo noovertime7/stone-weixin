@@ -47,7 +47,7 @@
         <li class="dib"><span>Symbol</span></li>
       </ul>
       
-      <a href="https://www.iconfont.cn/manage/index?manage_type=myprojects&projectId=3926194" target="_blank" class="nav-more">查看项目</a>
+      <a href="https://www.iconfont.cn/manage/index?manage_type=myprojects&projectId=4477619" target="_blank" class="nav-more">查看项目</a>
       
     </div>
     <div class="tab-container">
@@ -55,9 +55,33 @@
           <ul class="icon_lists dib-box">
           
             <li class="dib">
-              <span class="icon iconfont">&#xe618;</span>
+              <span class="icon iconfont">&#xe71a;</span>
+                <div class="name">大理石</div>
+                <div class="code-name">&amp;#xe71a;</div>
+              </li>
+          
+            <li class="dib">
+              <span class="icon iconfont">&#xe6e9;</span>
+                <div class="name">朋友圈</div>
+                <div class="code-name">&amp;#xe6e9;</div>
+              </li>
+          
+            <li class="dib">
+              <span class="icon iconfont">&#xe602;</span>
                 <div class="name">分享</div>
-                <div class="code-name">&amp;#xe618;</div>
+                <div class="code-name">&amp;#xe602;</div>
+              </li>
+          
+            <li class="dib">
+              <span class="icon iconfont">&#xe651;</span>
+                <div class="name">微信好友</div>
+                <div class="code-name">&amp;#xe651;</div>
+              </li>
+          
+            <li class="dib">
+              <span class="icon iconfont">&#xe665;</span>
+                <div class="name">worker with wrench</div>
+                <div class="code-name">&amp;#xe665;</div>
               </li>
           
           </ul>
@@ -78,9 +102,9 @@
 <pre><code class="language-css"
 >@font-face {
   font-family: 'iconfont';
-  src: url('iconfont.woff2?t=1711080478385') format('woff2'),
-       url('iconfont.woff?t=1711080478385') format('woff'),
-       url('iconfont.ttf?t=1711080478385') format('truetype');
+  src: url('iconfont.woff2?t=1711427861446') format('woff2'),
+       url('iconfont.woff?t=1711427861446') format('woff'),
+       url('iconfont.ttf?t=1711427861446') format('truetype');
 }
 </code></pre>
           <h3 id="-iconfont-">第二步：定义使用 iconfont 的样式</h3>
@@ -107,11 +131,47 @@
         <ul class="icon_lists dib-box">
           
           <li class="dib">
-            <span class="icon iconfont stone-fenxiang"></span>
+            <span class="icon iconfont icon-dalishi"></span>
+            <div class="name">
+              大理石
+            </div>
+            <div class="code-name">.icon-dalishi
+            </div>
+          </li>
+          
+          <li class="dib">
+            <span class="icon iconfont icon-iconfontzhizuobiaozhunbduan36"></span>
+            <div class="name">
+              朋友圈
+            </div>
+            <div class="code-name">.icon-iconfontzhizuobiaozhunbduan36
+            </div>
+          </li>
+          
+          <li class="dib">
+            <span class="icon iconfont icon-fenxiang"></span>
             <div class="name">
               分享
             </div>
-            <div class="code-name">.stone-fenxiang
+            <div class="code-name">.icon-fenxiang
+            </div>
+          </li>
+          
+          <li class="dib">
+            <span class="icon iconfont icon-weixinhaoyou"></span>
+            <div class="name">
+              微信好友
+            </div>
+            <div class="code-name">.icon-weixinhaoyou
+            </div>
+          </li>
+          
+          <li class="dib">
+            <span class="icon iconfont icon-a-workerwithwrench"></span>
+            <div class="name">
+              worker with wrench
+            </div>
+            <div class="code-name">.icon-a-workerwithwrench
             </div>
           </li>
           
@@ -131,7 +191,7 @@
 <pre><code class="language-html">&lt;link rel="stylesheet" href="./iconfont.css"&gt;
 </code></pre>
         <h3 id="-">第二步：挑选相应图标并获取类名，应用于页面：</h3>
-<pre><code class="language-html">&lt;span class="iconfont stone-xxx"&gt;&lt;/span&gt;
+<pre><code class="language-html">&lt;span class="iconfont icon-xxx"&gt;&lt;/span&gt;
 </code></pre>
         <blockquote>
           <p>"
@@ -144,10 +204,42 @@
           
             <li class="dib">
                 <svg class="icon svg-icon" aria-hidden="true">
-                  <use xlink:href="#stone-fenxiang"></use>
+                  <use xlink:href="#icon-dalishi"></use>
+                </svg>
+                <div class="name">大理石</div>
+                <div class="code-name">#icon-dalishi</div>
+            </li>
+          
+            <li class="dib">
+                <svg class="icon svg-icon" aria-hidden="true">
+                  <use xlink:href="#icon-iconfontzhizuobiaozhunbduan36"></use>
+                </svg>
+                <div class="name">朋友圈</div>
+                <div class="code-name">#icon-iconfontzhizuobiaozhunbduan36</div>
+            </li>
+          
+            <li class="dib">
+                <svg class="icon svg-icon" aria-hidden="true">
+                  <use xlink:href="#icon-fenxiang"></use>
                 </svg>
                 <div class="name">分享</div>
-                <div class="code-name">#stone-fenxiang</div>
+                <div class="code-name">#icon-fenxiang</div>
+            </li>
+          
+            <li class="dib">
+                <svg class="icon svg-icon" aria-hidden="true">
+                  <use xlink:href="#icon-weixinhaoyou"></use>
+                </svg>
+                <div class="name">微信好友</div>
+                <div class="code-name">#icon-weixinhaoyou</div>
+            </li>
+          
+            <li class="dib">
+                <svg class="icon svg-icon" aria-hidden="true">
+                  <use xlink:href="#icon-a-workerwithwrench"></use>
+                </svg>
+                <div class="name">worker with wrench</div>
+                <div class="code-name">#icon-a-workerwithwrench</div>
             </li>
           
           </ul>

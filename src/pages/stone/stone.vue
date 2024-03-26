@@ -109,8 +109,10 @@
       <view class="icons">
         <button class="icons-button"><text class="icon-heart"></text>收藏</button>
         <button class="icons-button" open-type="share">
-          <i class="iconfont stone-fenxiang"></i>
-          分享
+          <view>
+            <i class="t-icon t-icon-weixinhaoyou"></i>
+          </view>
+          微信
         </button>
         <navigator class="icons-button" url="/pages/cart/cart2" open-type="navigate">
           <text class="icon-cart"></text>安装过

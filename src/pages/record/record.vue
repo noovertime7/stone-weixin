@@ -2,14 +2,11 @@
   <scroll-view scroll-y class="viewport">
     <!-- 基本信息 -->
     <view class="goods">
+      <XtxVideo :url="RecordData?.video"></XtxVideo>
       <!--    视频-->
-      <view class="preview">
-        <video
-          src="
-          controls
-          poster="https://www.example.com/poster.jpg"
-        ></video>
-      </view>
+      <!-- <view class="preview"    enable-danmu danmu-btn controls></view>>
+        <video :src="RecordData?.video"></video>
+      </view> -->
 
       <!-- 商品简介 -->
       <view class="meta">
@@ -19,8 +16,7 @@
         </view> -->
         <view class="name ellipsis" style="display: flex; align-items: center"
           >{{ RecordData?.stoneName }}
-          <!-- <view class="m-2" v-if="member.profile"> -->
-          <view class="m-2">
+          <view class="m-2" v-if="member.profile">
             <button class="m-2" size="mini" plain type="primary" @click="editStone">编辑</button>
             <button class="m-2" size="mini" plain type="warn" @click="handleDelete">删除</button>
           </view>
@@ -69,12 +65,35 @@
         ></view>
       </view>
     </view>
+
+    <!-- 同类推荐 -->
+    <view class="similar panel">
+      <view class="title">
+        <text>同类推荐</text>
+      </view>
+      <view class="content">
+        <navigator
+          v-for="item in SameStones"
+          :key="item.id"
+          class="goods"
+          hover-class="none"
+          :url="`/pages/stone/stone?id=${item.id}`"
+        >
+          <image class="image" mode="aspectFill" :src="item.coverImages[0]"></image>
+          <view class="name ellipsis">{{ item.name }}</view>
+          <!-- <view class="price">
+          <text class="symbol">¥</text>
+          <text class="number">18.50</text>
+        </view> -->
+        </navigator>
+      </view>
+    </view>
   </scroll-view>
 
   <!-- 用户操作 -->
   <view class="toolbar">
     <!-- <view class="icons"> -->
-    <!-- <button class="icons-button"><text class="icon-heart"></text>收藏</button>
+    <!--
       <button class="icons-button" open-type="contact">
         <text class="icon-handset"></text>客服
       </button>
@@ -84,13 +103,29 @@
     <!-- </view> -->
     <view class="buttons">
       <view class="icons">
-        <button class="icons-button"><text class="icon-heart"></text>收藏</button>
+        <!-- <button class="icons-button" @click="handleSharePengyouquan">
+          <view>
+            <i class="t-icon t-icon-iconfontzhizuobiaozhunbduan36"></i>
+          </view>
+
+          朋友圈
+        </button> -->
+
         <button class="icons-button" open-type="share">
-          <i class="iconfont stone-fenxiang"></i>
-          分享
+          <view>
+            <i class="t-icon t-icon-weixinhaoyou"></i>
+          </view>
+          微信
         </button>
-        <navigator class="icons-button" url="/pages/cart/cart2" open-type="navigate">
-          <text class="icon-cart"></text>安装过
+        <navigator
+          class="icons-button"
+          :url="`/pages/stone/stone?id=${RecordData?.stoneId}`"
+          open-type="navigate"
+        >
+          <view>
+            <i class="t-icon t-icon-dalishi"></i>
+          </view>
+          大理石
         </navigator>
       </view>
       <view class="addcart" @tap="copyWeixinNum"> 微信联系 </view>
@@ -101,12 +136,23 @@
 
 <script setup lang="ts">
 import { deleteRecordById, getRecordById } from '@/services/record'
+import XtxVideo from '@/components/XtxVideo.vue'
 import type { Record } from '@/types/record_d'
 import { copyWeixinNum, makeCall } from '@/utils/utils'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { useMemberStore } from '@/stores'
+import { formatYearMonth } from '@/utils/format.js'
+import type { Stone } from '../../types/stone'
+import { getSameStones } from '../../services/stone'
 
+const SameStones = ref<Stone[]>([])
+const getSameStonesData = async () => {
+  if (RecordData.value?.stoneId) {
+    const res = await getSameStones(RecordData.value?.stoneId)
+    SameStones.value = res.data
+  }
+}
 const member = useMemberStore()
 // 接收页面参数
 const query = defineProps<{
@@ -147,23 +193,15 @@ const handleDelete = async () => {
   })
 }
 
-onLoad(() => {
-  getRecordData()
+onLoad(async () => {
+  await getRecordData()
+  await getSameStonesData()
 })
 
 // 轮播图变化时
 const currentIndex = ref(0)
 const onChange: UniHelper.SwiperOnChange = (ev) => {
   currentIndex.value = ev.detail.current
-}
-
-// 点击图片时
-const onTapImage = (url: string) => {
-  // 大图预览
-  uni.previewImage({
-    current: url,
-    urls: StoneData.value!.coverImages,
-  })
 }
 
 const openDetailImage = (url: string) => {
@@ -179,6 +217,31 @@ const editStone = () => {
     url: '/pages/record_manage/record_manage?id=' + RecordData.value?.id,
   })
 }
+
+/** 激活“分享给好友” */
+onShareAppMessage((options: Page.ShareAppMessageOption): Page.CustomShareContent => {
+  let pages = getCurrentPages() //获取当前页面栈的信息
+  let currentPage = pages[pages.length - 1] //获取到当前页面栈中最后一个页面的索引
+
+  let obj: Page.CustomShareContent = {
+    title: `[${RecordData.value?.location}]${RecordData.value?.stoneName}${formatYearMonth(
+      RecordData.value?.created_at,
+    )}安装记录`,
+    desc: `${RecordData.value?.description}`,
+    path: `${currentPage.route}?id=${query.id}`,
+  }
+
+  return obj
+})
+/** 激活“分享到朋友圈”， 注意：需要先激活“分享给好友” */
+onShareTimeline((): Page.ShareTimelineContent => {
+  return {
+    title: `[${RecordData.value?.location}]${RecordData.value?.stoneName}${formatYearMonth(
+      RecordData.value?.created_at,
+    )}安装记录`,
+    query: `id=${query.id}`,
+  }
+})
 </script>
 
 <style lang="scss">
@@ -235,34 +298,8 @@ page {
 .goods {
   background-color: #fff;
   .preview {
-    height: 750rpx;
-    position: relative;
-    .image {
-      width: 750rpx;
-      height: 750rpx;
-    }
-    .indicator {
-      height: 40rpx;
-      padding: 0 24rpx;
-      line-height: 40rpx;
-      border-radius: 30rpx;
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-      background-color: rgba(0, 0, 0, 0.3);
-      position: absolute;
-      bottom: 30rpx;
-      right: 30rpx;
-      .current {
-        font-size: 26rpx;
-      }
-      .split {
-        font-size: 24rpx;
-        margin: 0 1rpx 0 2rpx;
-      }
-      .total {
-        font-size: 24rpx;
-      }
-    }
+    height: 420rpx;
+    width: 100%;
   }
   .meta {
     position: relative;

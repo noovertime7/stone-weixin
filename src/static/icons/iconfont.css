@@ -1,8 +1,8 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 3926194 */
-  src: url('iconfont.woff2?t=1711080478385') format('woff2'),
-       url('iconfont.woff?t=1711080478385') format('woff'),
-       url('iconfont.ttf?t=1711080478385') format('truetype');
+  font-family: "iconfont"; /* Project id 4477619 */
+  src: url('iconfont.woff2?t=1711427861446') format('woff2'),
+       url('iconfont.woff?t=1711427861446') format('woff'),
+       url('iconfont.ttf?t=1711427861446') format('truetype');
 }
 
 .iconfont {
@@ -13,7 +13,23 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.stone-fenxiang:before {
-  content: "\e618";
+.icon-dalishi:before {
+  content: "\e71a";
+}
+
+.icon-iconfontzhizuobiaozhunbduan36:before {
+  content: "\e6e9";
+}
+
+.icon-fenxiang:before {
+  content: "\e602";
+}
+
+.icon-weixinhaoyou:before {
+  content: "\e651";
+}
+
+.icon-a-workerwithwrench:before {
+  content: "\e665";
 }
 

@@ -73,7 +73,7 @@ const onScrolltolower = () => {
       </navigator> -->
     </view>
     <!-- 我的订单 -->
-    <view class="orders">
+    <view class="orders" v-if="memberStore.profile">
       <view class="title">
         大理石管理
         <!-- <navigator class="navigator" url="/pagesOrder/list/list?type=0" hover-class="none">
