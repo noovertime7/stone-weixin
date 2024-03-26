@@ -1,5 +1,5 @@
 <template>
-  <view class="navbar" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
+  <scroll-view class="navbar" scroll-y enable-back-to-top @scrolltolower="onScrolltolower">
     <SearchBar :inputData="keyword" @confirm="handleSearchEvent"></SearchBar>
 
     <view v-if="list.length">
@@ -28,7 +28,10 @@
         <!-- <uni-badge :text="item" size="normal" v-for="(item,index) in list" :key="index" style="margin-right: 25rpx;margin-bottom: 25rpx;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;width: 200rpx;" @click="handleSearchEvent(item)"></uni-badge> -->
       </view>
     </view>
-  </view>
+    <view>
+      <XtxSearchGuess ref="guessRef"></XtxSearchGuess>
+    </view>
+  </scroll-view>
 </template>
 
 <script lang="ts" setup>
@@ -36,6 +39,12 @@ const { safeAreaInsets } = uni.getSystemInfoSync()
 import SearchBar from '@/components/XtxSearchBar.vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+import XtxSearchGuess from '@/components/XtxSearchGuess.vue'
+
+const guessRef = ref()
+const onScrolltolower = () => {
+  guessRef.value?.getMore()
+}
 
 const list = ref<string[]>([])
 const keyword = ref('')
@@ -93,4 +102,8 @@ onLoad(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.navbar {
+  height: 100vh;
+}
+</style>
