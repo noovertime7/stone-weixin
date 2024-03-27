@@ -184,7 +184,7 @@ const onSubmit = async () => {
 
   // 上传 converImages
   for (const file of converImages.value) {
-    const resp = await upload(file)
+    const resp = await upload(file, 'image')
     if (resp) {
       coverImageLinks.value.push(resp.data[0])
     }
@@ -192,7 +192,7 @@ const onSubmit = async () => {
 
   // 上传 detailImages
   for (const file of detailImages.value) {
-    const resp = await upload(file)
+    const resp = await upload(file, 'image')
     if (resp) {
       detailImageLinks.value.push(resp.data[0])
     }
