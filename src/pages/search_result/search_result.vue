@@ -51,8 +51,9 @@ import type { Record } from '../../types/record_d'
 // 接收页面参数
 const query = defineProps<{
   keyword: string
+  current: number
 }>()
-const current = ref(0)
+const current = ref(query.current)
 const pageParams: Required<PageParams> = {
   page: 1,
   pageSize: 10,

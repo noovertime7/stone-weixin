@@ -127,7 +127,7 @@ const onSubmit = async () => {
   const res = await createRecord(formData.value)
   if (res) {
     uni.showToast({
-      title: `新增成功`,
+      title: `新增成功，一路顺风`,
       icon: 'success',
       duration: 2000,
     })
