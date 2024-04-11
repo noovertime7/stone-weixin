@@ -11,7 +11,7 @@ if (!env) {
 const apis = {
   // 开发版
   // develop: 'http://127.0.0.1:8880',
-  develop: 'http://10.20.10.183:8880',
+  develop: 'https://stone.yunxue521.top',
   // 体验版
   trial: 'https://stone.yunxue521.top',
   // 正式版

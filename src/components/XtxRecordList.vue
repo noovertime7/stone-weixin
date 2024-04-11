@@ -10,7 +10,7 @@
         <text class="text-ellipsis font-sm"> {{ record.date }}</text>
       </view>
       <text class="description">{{ record.description }}</text>
-      <view class="flex align-center mt-1 text-light-muted">
+      <view class="flex align-center mt-1 text-light-muted" v-if="record.location">
         <uni-icons type="location" size="20" color="#A9A5A0"></uni-icons>
         <text class="text-ellipsis font-sm"> {{ record.location }}</text>
       </view>
