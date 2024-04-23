@@ -21,10 +21,13 @@
       class="scroll-view"
       scroll-y
     >
-      <!-- 自定义轮播图 -->
-      <XtxSwiper :list="bannerList" />
-      <!-- 猜你喜欢 -->
-      <XtxGuess ref="guessRef" />
+      <Skeleton v-if="loading" />
+      <template v-else>
+        <!-- 自定义轮播图 -->
+        <XtxSwiper :list="bannerList" />
+        <!-- 猜你喜欢 -->
+        <XtxGuess ref="guessRef" />
+      </template>
     </scroll-view>
   </template>
 </template>
@@ -36,8 +39,9 @@ import { getHotStones } from '@/services/stone'
 import type { Stone } from '@/types/stone'
 import { onLoad } from '@dcloudio/uni-app'
 import { makeCall } from '@/utils/utils'
+import Skeleton from './components/Skeleton.vue'
 const bannerList = ref<Stone[]>([])
-
+const loading = ref(true)
 const getHotBannerStones = async () => {
   const res = await getHotStones()
   bannerList.value = res.data
@@ -69,6 +73,7 @@ const onScrolltolower = () => {
 
 onLoad(() => {
   getHotBannerStones()
+  loading.value = false
 })
 </script>
 

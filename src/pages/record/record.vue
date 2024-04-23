@@ -2,7 +2,9 @@
   <scroll-view scroll-y class="viewport">
     <!-- 基本信息 -->
     <view class="goods">
-      <XtxVideo :url="RecordData?.video" v-if="RecordData?.video"></XtxVideo>
+      <view>
+        <XtxVideo :url="RecordData?.video" v-show="RecordData?.video"></XtxVideo>
+      </view>
       <!--    视频-->
       <!-- <view class="preview"    enable-danmu danmu-btn controls></view>>
         <video :src="RecordData?.video"></video>

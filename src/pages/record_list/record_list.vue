@@ -4,7 +4,7 @@
       <uni-search-bar placeholder="搜索您小区的安装" bgColor="#EEEEEE" readonly />
     </view>
 
-    <view class="flex flex-column" style="height: 100%" v-if="Data">
+    <view class="flex flex-column" style="height: 100%" v-if="Data.length">
       <view :duration="200" class="flex-1 flex flex-column">
         <view class="flex">
           <scroll-view class="flex-1" scroll-y @scrolltolower="handleLoadMore()">
@@ -20,10 +20,12 @@
         <uni-load-more iconType="auto" :status="status" />
       </view>
     </view>
+    <view v-else> <Skeleton></Skeleton> </view>
   </view>
 </template>
 
 <script setup lang="ts">
+import Skeleton from './Skeleton.vue'
 import { pageRecord } from '@/services/record'
 import type { PageParams } from '@/types/global'
 import { onLoad } from '@dcloudio/uni-app'
