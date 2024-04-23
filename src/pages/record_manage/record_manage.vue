@@ -108,7 +108,7 @@ const onSubmit = async () => {
   })
 
   for (const file of video.value) {
-    const resp = await upload(file)
+    const resp = await upload(file, 'video')
     if (resp) {
       formData.value.video = resp.data[0]
     }
@@ -116,7 +116,7 @@ const onSubmit = async () => {
 
   // 上传 detailImages
   for (const file of detailImages.value) {
-    const resp = await upload(file)
+    const resp = await upload(file, 'image')
     if (resp) {
       formData.value.images.push(resp.data[0])
     }
@@ -127,7 +127,7 @@ const onSubmit = async () => {
   const res = await createRecord(formData.value)
   if (res) {
     uni.showToast({
-      title: `新增成功`,
+      title: `新增成功，一路顺风`,
       icon: 'success',
       duration: 2000,
     })

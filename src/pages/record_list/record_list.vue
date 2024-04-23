@@ -4,21 +4,25 @@
       <uni-search-bar placeholder="搜索您小区的安装" bgColor="#EEEEEE" readonly />
     </view>
 
-    <view class="flex flex-column" style="height: 100%" v-if="Data.length">
-      <view :duration="200" class="flex-1 flex flex-column">
-        <view class="flex">
-          <scroll-view class="flex-1" scroll-y @scrolltolower="handleLoadMore()">
-            <XtxRecordList
-              @tap="pushRecordDetail(item.id)"
-              tag="one"
-              :record="item"
-              v-for="(item, index) in Data"
-              :key="index"
-            ></XtxRecordList>
-          </scroll-view>
-        </view>
-        <uni-load-more iconType="auto" :status="status" />
-      </view>
+    <view v-if="Data" class="scroll-view">
+      <scroll-view
+        enable-back-to-top
+        refresher-enabled
+        @refresherrefresh="onRefresherrefresh"
+        :refresher-triggered="isTriggered"
+        @scrolltolower="handleLoadMore"
+        class="scroll"
+        scroll-y
+      >
+        <XtxRecordList
+          @tap="pushRecordDetail(item.id)"
+          tag="one"
+          :record="item"
+          v-for="(item, index) in Data"
+          :key="index"
+        ></XtxRecordList>
+        <uni-load-more iconType="snow" :status="status" />
+      </scroll-view>
     </view>
     <view v-else> <Skeleton></Skeleton> </view>
   </view>
@@ -32,7 +36,9 @@ import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import type { Record } from '@/types/record_d'
 import type XtxRecordList from '@/components/XtxRecordList.vue'
-const handleLoadMore = () => {}
+const handleLoadMore = async () => {
+  await getPageData()
+}
 const status = ref('more')
 const Data = ref<Record[]>([])
 const pageParams: Required<PageParams> = {
@@ -45,7 +51,24 @@ const onSearch = () => {
     url: '/pages/search/search',
   })
 }
+const isTriggered = ref(false)
+const onRefresherrefresh = async () => {
+  // 开始动画
+  isTriggered.value = true
+
+  await Promise.all([
+    // getHomeBannerData(),
+    // getHomeCategoryData(),
+    // getHomeHotData(),
+    getPageData(),
+  ])
+  // 关闭动画
+  isTriggered.value = false
+}
+
 const getPageData = async () => {
+  console.log(status.value)
+
   if (status.value != 'more') return
 
   status.value = 'loading'
@@ -74,4 +97,15 @@ onLoad(() => {
   getPageData()
 })
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.scroll {
+  flex: 1;
+}
+
+.scroll-view {
+  background-color: #f7f7f7;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+}
+</style>

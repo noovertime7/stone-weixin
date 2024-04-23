@@ -96,28 +96,26 @@
 
   <!-- 用户操作 -->
   <view class="toolbar" :style="{ paddingBottom: safeAreaInsets?.bottom + 'px' }">
-    <!-- <view class="icons"> -->
-    <!-- <button class="icons-button"><text class="icon-heart"></text>收藏</button>
-      <button class="icons-button" open-type="contact">
-        <text class="icon-handset"></text>客服
-      </button>
-      <navigator class="icons-button" url="/pages/cart/cart" open-type="switchTab">
-        <text class="icon-cart"></text>购物车
-      </navigator> -->
-    <!-- </view> -->
     <view class="buttons">
       <view class="icons">
-        <button class="icons-button"><text class="icon-heart"></text>收藏</button>
         <button class="icons-button" open-type="share">
           <view>
             <i class="t-icon t-icon-weixinhaoyou"></i>
           </view>
           微信
         </button>
-        <navigator class="icons-button" url="/pages/cart/cart2" open-type="navigate">
-          <text class="icon-cart"></text>安装过
+        <navigator
+          class="icons-button"
+          :url="`/pages/search_result/search_result?keyword=${StoneData?.name}&current=1`"
+          open-type="navigate"
+        >
+          <view>
+            <i class="t-icon t-icon-dalishi"></i>
+          </view>
+          安装记录
         </navigator>
       </view>
+
       <view class="addcart" @tap="copyWeixinNum"> 微信联系 </view>
       <view class="buynow" @tap="makeCall"> 电话联系 </view>
     </view>
@@ -130,8 +128,13 @@ import type { Stone } from '@/types/stone'
 import { copyWeixinNum, makeCall } from '@/utils/utils'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import { onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
 import { useMemberStore } from '@/stores'
+import mixShare from '@/utils/share'
+
+let pages = getCurrentPages() //获取当前页面栈的信息
+let currentPage = pages[pages.length - 1] //获取到当前页面栈中最后一个页面的索引
+const { share } = mixShare
+
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
 const member = useMemberStore()
@@ -153,27 +156,6 @@ const getSameStonesData = async () => {
     SameStones.value = res.data
   }
 }
-
-/** 激活“分享给好友” */
-onShareAppMessage((options: Page.ShareAppMessageOption): Page.CustomShareContent => {
-  let pages = getCurrentPages() //获取当前页面栈的信息
-  let currentPage = pages[pages.length - 1] //获取到当前页面栈中最后一个页面的索引
-
-  let obj: Page.CustomShareContent = {
-    title: `${StoneData.value?.name}`,
-    desc: `${StoneData.value?.description}`,
-    path: `${currentPage.route}?id=${query.id}`,
-  }
-
-  return obj
-})
-/** 激活“分享到朋友圈”， 注意：需要先激活“分享给好友” */
-onShareTimeline((): Page.ShareTimelineContent => {
-  return {
-    title: `${StoneData.value?.name}`,
-    query: `id=${query.id}`,
-  }
-})
 
 const handleDelete = async () => {
   uni.showModal({
@@ -201,9 +183,13 @@ const handleDelete = async () => {
   })
 }
 
-onLoad(() => {
-  getStoneData()
-  getSameStonesData()
+onLoad(async () => {
+  await getStoneData()
+  await getSameStonesData()
+
+  share.desc = `${StoneData.value?.description}`
+  share.path = `${currentPage.route}?id=${query.id}`
+  share.title = `${StoneData.value?.name}`
 })
 
 // 轮播图变化时

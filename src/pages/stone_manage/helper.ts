@@ -21,12 +21,14 @@ export type StoneformData = {
   hot: number
 }
 
+type fileType = 'image' | 'video'
+
 const uploadUrl = `${baseAPI}/api/v1/upload`
 
-export const upload = async (file: image) => {
+export const upload = async (file: image, type: fileType) => {
   return new Promise<UploadResponse | null>((resolve, reject) => {
     uni.uploadFile({
-      url: uploadUrl,
+      url: `${uploadUrl}?type=${type}`,
       filePath: file.tempFilePath,
       name: 'file',
       success: (res) => {

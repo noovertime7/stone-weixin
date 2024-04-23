@@ -52,7 +52,7 @@ const onSubmit = async () => {
       await createStoneType(data)
     }
     // 成功提示
-    uni.showToast({ icon: 'success', title: query.id ? '修改成功' : '添加成功' })
+    uni.showToast({ icon: 'success', title: query.id ? '修改成功,一路顺风' : '添加成功,一路顺风' })
     // 返回上一页
     setTimeout(() => {
       uni.navigateBack()

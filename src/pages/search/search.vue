@@ -35,7 +35,6 @@
 </template>
 
 <script lang="ts" setup>
-const { safeAreaInsets } = uni.getSystemInfoSync()
 import SearchBar from '@/components/XtxSearchBar.vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
@@ -47,11 +46,14 @@ const onScrolltolower = () => {
 }
 
 const list = ref<string[]>([])
-const keyword = ref('')
+
+const query = defineProps<{
+  keyword: string
+}>()
+
+const keyword = ref(query.keyword)
 
 const handleSearchEvent = (value: string = '') => {
-  console.log(value)
-
   if (value) {
     keyword.value = value
   }
@@ -62,7 +64,7 @@ const handleSearchEvent = (value: string = '') => {
   // 跳转到搜索结果页
 
   uni.navigateTo({
-    url: '/pages/search_result/search_result?keyword=' + keyword.value,
+    url: `/pages/search_result/search_result?keyword=${keyword.value}&current=0`,
   })
 }
 

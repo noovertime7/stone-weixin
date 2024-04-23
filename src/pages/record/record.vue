@@ -2,9 +2,7 @@
   <scroll-view scroll-y class="viewport">
     <!-- 基本信息 -->
     <view class="goods">
-      <view>
-        <XtxVideo :url="RecordData?.video" v-show="RecordData?.video"></XtxVideo>
-      </view>
+      <XtxVideo :url="RecordData?.video" v-show="RecordData?.video"></XtxVideo>
       <!--    视频-->
       <!-- <view class="preview"    enable-danmu danmu-btn controls></view>>
         <video :src="RecordData?.video"></video>
@@ -51,20 +49,20 @@
       </view>
       <view class="content">
         <view class="properties">
-          <view class="item">
+          <view class="item" v-if="RecordData?.date">
             <text class="label">安装时间</text>
             <text class="value">{{ RecordData?.date }}</text>
           </view>
-          <view class="item">
+          <view class="item" v-if="RecordData?.location">
             <text class="label">地址</text>
-            <text class="value">{{ RecordData?.location }}次</text>
+            <text class="value">{{ RecordData?.location }}</text>
           </view>
-          <view class="item">
+          <view class="item" v-if="RecordData?.detailedlocation">
             <text class="label">详细地址</text>
-            <text class="value">{{ RecordData?.detailedlocation }}次</text>
+            <text class="value">{{ RecordData?.detailedlocation }}</text>
           </view>
         </view>
-        <view>
+        <view v-if="RecordData?.latitude && RecordData?.longitude">
           <XtxMap :latitude="RecordData?.latitude" :longitude="RecordData?.longitude" />
         </view>
 
@@ -114,14 +112,6 @@
     <!-- </view> -->
     <view class="buttons">
       <view class="icons">
-        <!-- <button class="icons-button" @click="handleSharePengyouquan">
-          <view>
-            <i class="t-icon t-icon-iconfontzhizuobiaozhunbduan36"></i>
-          </view>
-
-          朋友圈
-        </button> -->
-
         <button class="icons-button" open-type="share">
           <view>
             <i class="t-icon t-icon-weixinhaoyou"></i>
@@ -151,11 +141,16 @@ import XtxVideo from '@/components/XtxVideo.vue'
 import XtxMap from '@/components/XtxMap.vue'
 import type { Record } from '@/types/record_d'
 import { copyWeixinNum, makeCall } from '@/utils/utils'
-import { onLoad, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
+import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { useMemberStore } from '@/stores'
 import type { Stone } from '../../types/stone'
 import { getSameStones } from '../../services/stone'
+import mixShare from '@/utils/share'
+
+let pages = getCurrentPages() //获取当前页面栈的信息
+let currentPage = pages[pages.length - 1] //获取到当前页面栈中最后一个页面的索引
+const { share } = mixShare
 
 const SameStones = ref<Stone[]>([])
 const getSameStonesData = async () => {
@@ -207,6 +202,9 @@ const handleDelete = async () => {
 onLoad(async () => {
   await getRecordData()
   await getSameStonesData()
+  share.desc = `${RecordData.value?.description}`
+  share.path = `${currentPage.route}?id=${query.id}`
+  share.title = `[${RecordData.value?.location}]${RecordData.value?.stoneName}${RecordData.value?.date}安装记录`
 })
 
 // 轮播图变化时
@@ -228,27 +226,6 @@ const editStone = () => {
     url: '/pages/record_manage/record_manage?id=' + RecordData.value?.id,
   })
 }
-
-/** 激活“分享给好友” */
-onShareAppMessage((options: Page.ShareAppMessageOption): Page.CustomShareContent => {
-  let pages = getCurrentPages() //获取当前页面栈的信息
-  let currentPage = pages[pages.length - 1] //获取到当前页面栈中最后一个页面的索引
-
-  let obj: Page.CustomShareContent = {
-    title: `[${RecordData.value?.location}]${RecordData.value?.stoneName}${RecordData.value?.date}安装记录`,
-    desc: `${RecordData.value?.description}`,
-    path: `${currentPage.route}?id=${query.id}`,
-  }
-
-  return obj
-})
-/** 激活“分享到朋友圈”， 注意：需要先激活“分享给好友” */
-onShareTimeline((): Page.ShareTimelineContent => {
-  return {
-    title: `[${RecordData.value?.location}]${RecordData.value?.stoneName}${RecordData.value?.date}安装记录`,
-    query: `id=${query.id}`,
-  }
-})
 </script>
 
 <style lang="scss">
