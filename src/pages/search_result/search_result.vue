@@ -22,7 +22,7 @@
                 <XtxRecordList
                   v-if="tabs[current].type == 'record'"
                   :record="item"
-                  @tap="pushRecordDetail"
+                  @tap="pushRecordDetail(item.id)"
                 >
                 </XtxRecordList>
               </view>
