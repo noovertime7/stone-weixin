@@ -12,11 +12,17 @@ onHide(() => {
 </script>
 
 <style lang="scss">
-// 字体图标
+@import '@/styles/theme.scss';
 @import '@/styles/fonts.scss';
 @import url('./static/icons/iconfont-weapp-icon.css');
 @import url('./common/free.css');
 @import url('./common/common.css');
+
+page {
+  background-color: $bg-primary;
+  color: $text-primary;
+}
+
 view,
 navigator,
 input,
@@ -41,7 +47,6 @@ image {
   vertical-align: middle;
 }
 
-// 两行省略
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;

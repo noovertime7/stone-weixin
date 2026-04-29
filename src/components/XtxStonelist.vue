@@ -1,22 +1,14 @@
 <template>
-  <view class="scroll-row-item course course-one" @click="openDetail">
-    <view class="position-relative">
-      <image :src="stone.coverImages[0]"></image>
-      <view class="text-white font-sm">热门</view>
+  <view class="stone-card" @click="openDetail">
+    <view class="card-image">
+      <image :src="stone.coverImages[0]" mode="aspectFill"></image>
     </view>
-    <view class="flex flex-column flex-shrink">
-      <text class="text-ellipsis font-md">{{ stone.name }}</text>
-      <text class="text-ellipsis font-sm">{{ stone.description }}</text>
-      <view class="flex flex-1 align-end">
-        <slot>
-          <uni-badge
-            v-if="isNewlyPublished(stone.created_at)"
-            class="uni-badge-left-margin"
-            text="新发布"
-            type="primary"
-          />
-          <uni-badge v-if="stone.buyNum > 100" class="uni-badge-left-margin" text="热门" />
-        </slot>
+    <view class="card-info">
+      <text class="stone-name">{{ stone.name }}</text>
+      <text class="stone-desc">{{ stone.description }}</text>
+      <view class="tags">
+        <text class="tag" v-if="isNewlyPublished(stone.created_at)">新上架</text>
+        <text class="tag hot" v-if="stone.buyNum > 100">热门</text>
       </view>
     </view>
   </view>
@@ -26,27 +18,6 @@
 import { ref } from 'vue'
 import type { Stone } from '../types/stone'
 import { isNewlyPublished } from '@/utils/utils'
-
-// const openDetail = () => {
-//   let params = `id=${item.id}`;
-
-//   if (item.group_id) {
-//     params += `&group_id=${item.group_id}`;
-//   }
-//   if (item.flashsale_id) {
-//     params += `&flashsale_id=${item.flashsale_id}`;
-//   }
-
-//   let url = '/pages/course/course?' + params;
-//   if (!item.type || item.type == 'column') {
-//     url = '/pages/column/column?' + params;
-//   }
-//   if (item.type == 'live') {
-//     url = '/pages/live/live?' + params;
-//   }
-
-//   uni.navigateTo({ url });
-// };
 
 const openDetail = () => {}
 
@@ -59,40 +30,76 @@ const tag = ref(props.tag)
 </script>
 
 <style scoped>
-.course-two {
-  width: 340rpx;
-  margin-left: 20rpx;
-  margin-bottom: 20rpx;
+.stone-card {
+  display: flex;
+  padding: 24rpx;
+  margin: 16rpx 24rpx;
+  background: #222222;
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(201, 169, 110, 0.08);
 }
-.course-two > view:last-child > text:first-child {
-  margin-top: 10rpx;
+
+.card-image {
+  width: 260rpx;
+  height: 200rpx;
+  flex-shrink: 0;
+  margin-right: 24rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
 }
-.course-two image,
-.course-two > view:first-child {
-  width: 340rpx;
-  height: 180rpx;
+
+.card-image image {
+  width: 100%;
+  height: 100%;
 }
-.course > view:first-child > view {
-  position: absolute;
-  right: 10rpx;
-  bottom: 10rpx;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 0 10rpx;
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
-.course-one {
-  display: flex !important;
-  padding: 20rpx;
+
+.stone-name {
+  font-size: 30rpx;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.course-one > view:first-child {
-  margin-right: 20rpx;
+
+.stone-desc {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.45);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.5;
 }
-.course-one image,
-.course-one > view:first-child {
-  width: 300rpx;
-  height: 170rpx;
-  flex-shrink: 1;
+
+.tags {
+  display: flex;
+  gap: 12rpx;
+  margin-top: auto;
+  padding-top: 12rpx;
 }
-.course-one > view:last-child {
-  width: 400rpx;
+
+.tag {
+  padding: 4rpx 16rpx;
+  font-size: 20rpx;
+  color: #c9a96e;
+  border: 1rpx solid rgba(201, 169, 110, 0.3);
+  border-radius: 20rpx;
+  letter-spacing: 2rpx;
+}
+
+.hot {
+  color: #e8d5b7;
+  border-color: rgba(232, 213, 183, 0.3);
 }
 </style>

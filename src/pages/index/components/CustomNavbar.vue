@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
 
 const onSearch = () => {
@@ -11,67 +10,60 @@ const onSearch = () => {
 
 <template>
   <view class="navbar" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
-    <!-- logo文字 -->
-    <view class="logo">
+    <view class="logo-area">
       <image class="logo-image" src="@/static/images/junteng.png"></image>
-      <text class="logo-text">高品质 · 亲民 · 高效</text>
+      <view class="logo-divider"></view>
+      <text class="logo-text">骏腾石材</text>
     </view>
-    <!-- 搜索条 -->
     <view class="search" @click="onSearch">
-      <text class="icon-search">搜索大理石或安装记录</text>
-      <text class="icon-scan"></text>
+      <uni-icons type="search" size="18" color="rgba(255,255,255,0.5)"></uni-icons>
+      <text class="placeholder">搜索大理石或安装记录</text>
     </view>
   </view>
 </template>
 
 <style lang="scss">
-/* 自定义导航条 */
 .navbar {
-  background-image: url(@/static/images/navigator_bg.png);
-  background-size: cover;
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-top: 20px;
-  .logo {
+  padding: 20rpx 32rpx 24rpx;
+  background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 100%);
+  .logo-area {
     display: flex;
     align-items: center;
-    height: 64rpx;
-    padding-left: 30rpx;
+    height: 72rpx;
+    margin-bottom: 20rpx;
     .logo-image {
-      width: 266rpx;
-      height: 139rpx;
+      width: 200rpx;
+      height: 60rpx;
+    }
+    .logo-divider {
+      width: 1rpx;
+      height: 32rpx;
+      background: rgba(201, 169, 110, 0.4);
+      margin: 0 24rpx;
     }
     .logo-text {
-      flex: 1;
-      line-height: 28rpx;
-      color: #fff;
-      margin: 2rpx 0 0 20rpx;
-      padding-left: 20rpx;
-      border-left: 1rpx solid #fff;
-      font-size: 26rpx;
+      font-size: 28rpx;
+      color: #c9a96e;
+      letter-spacing: 4rpx;
+      font-weight: 500;
     }
   }
   .search {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 10rpx 0 26rpx;
-    height: 64rpx;
-    margin: 16rpx 20rpx;
-    color: #fff;
-    font-size: 28rpx;
-    border-radius: 32rpx;
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-  .icon-search {
-    &::before {
-      margin-right: 10rpx;
+    gap: 12rpx;
+    height: 72rpx;
+    padding: 0 28rpx;
+    border-radius: 36rpx;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1rpx solid rgba(201, 169, 110, 0.12);
+    .placeholder {
+      font-size: 26rpx;
+      color: rgba(255, 255, 255, 0.35);
     }
-  }
-  .icon-scan {
-    font-size: 30rpx;
-    padding: 15rpx;
   }
 }
 </style>

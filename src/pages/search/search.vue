@@ -4,33 +4,24 @@
 
     <view v-if="list.length">
       <view class="flex align-center justify-between py-3 px-2">
-        <text class="font-md font-weight-bold">历史记录</text>
-        <text class="font-sm text-light-muted" @click="clear">清除全部</text>
+        <text class="section-title">历史记录</text>
+        <text class="clear-btn" @click="clear">清除全部</text>
       </view>
 
       <view class="flex flex-wrap px-2" style="margin-right: -30rpx">
         <text
           @click="handleSearchEvent(item)"
-          class="bg-hover-light px-2 py-1 font-sm rounded-circle"
+          class="history-tag"
           v-for="(item, index) in list"
           :key="index"
-          style="
-            margin-right: 25rpx;
-            margin-bottom: 25rpx;
-            line-height: 1;
-            max-width: 300rpx;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-          "
           >{{ item }}</text
         >
-        <!-- <uni-badge :text="item" size="normal" v-for="(item,index) in list" :key="index" style="margin-right: 25rpx;margin-bottom: 25rpx;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;width: 200rpx;" @click="handleSearchEvent(item)"></uni-badge> -->
       </view>
     </view>
     <view>
       <XtxSearchGuess ref="guessRef"></XtxSearchGuess>
     </view>
+    <XtxContactFloat />
   </scroll-view>
 </template>
 
@@ -39,6 +30,7 @@ import SearchBar from '@/components/XtxSearchBar.vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import XtxSearchGuess from '@/components/XtxSearchGuess.vue'
+import XtxContactFloat from '@/components/XtxContactFloat.vue'
 
 const guessRef = ref()
 const onScrolltolower = () => {
@@ -61,8 +53,6 @@ const handleSearchEvent = (value: string = '') => {
     return uni.showToast({ icon: 'none', title: '请输入关键词' })
   }
   addHistory()
-  // 跳转到搜索结果页
-
   uni.navigateTo({
     url: `/pages/search_result/search_result?keyword=${keyword.value}&current=0`,
   })
@@ -88,6 +78,7 @@ const objToFirst = (arr: string[], index: number) => {
 const clear = () => {
   uni.showModal({
     content: '是否要清除搜索记录？',
+    confirmColor: '#c9a96e',
     success: (res) => {
       if (res.confirm) {
         list.value = []
@@ -107,5 +98,34 @@ onLoad(() => {
 <style scoped>
 .navbar {
   height: 100vh;
+  background: #1a1a1a;
+}
+
+.section-title {
+  font-size: 30rpx;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+}
+
+.clear-btn {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.history-tag {
+  display: inline-block;
+  padding: 12rpx 24rpx;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1rpx solid rgba(201, 169, 110, 0.12);
+  border-radius: 32rpx;
+  max-width: 300rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>

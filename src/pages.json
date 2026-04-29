@@ -20,72 +20,84 @@
 		{
 			"path": "pages/my/my",
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationBarTextStyle": "white",
+				"navigationBarTitleText": "关于"
 			}
 		},
 		{
 			"path": "pages/record_list/record_list",
 			"style": {
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "安装记录"
 			}
 		},
 		{
 			"path": "pages/category/category",
 			"style": {
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "分类"
 			}
 		},
 		{
 			"path": "pages/login/login",
 			"style": {
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "登录"
 			}
 		},
 		{
 			"path": "pages/stone_type_list/stone_type_list",
 			"style": {
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "大理石分类管理"
 			}
 		},
 		{
 			"path": "pages/stone_types_add/stone_types_add",
 			"style": {
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "新增大理石分类"
 			}
 		},
 		{
 			"path": "pages/stone_manage/stone_manage",
 			"style": {
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "大理石管理"
 			}
 		},
 		{
 			"path": "pages/stone/stone",
 			"style": {
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "大理石详情"
 			}
 		},
 		{
 			"path": "pages/search/search",
 			"style": {
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "搜索"
 			}
 		},
 		{
 			"path": "pages/search_result/search_result",
 			"style": {
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "搜索大理石"
 			}
 		},
 		{
 			"path": "pages/record_manage/record_manage",
 			"style": {
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "记录管理"
 			}
 		},
     {
 			"path": "pages/record/record",
 			"style": {
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "记录详情"
 			}
 		}
@@ -96,17 +108,16 @@
 		}
 	},
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
+		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#1a1a1a",
+		"backgroundColor": "#1a1a1a"
 	},
-	// 设置 TabBar
 	"tabBar": {
-		"color": "#333",
-		"selectedColor": "#27ba9b",
-		"backgroundColor": "#fff",
-		"borderStyle": "white",
+		"color": "rgba(255,255,255,0.5)",
+		"selectedColor": "#c9a96e",
+		"backgroundColor": "#1a1a1a",
+		"borderStyle": "black",
 		"list": [
 			{
 				"text": "首页",
@@ -127,7 +138,7 @@
 				"selectedIconPath": "static/tabs/work_record_selected.png"
 			},
 			{
-				"text": "我的",
+				"text": "关于",
 				"pagePath": "pages/my/my",
 				"iconPath": "static/tabs/user_default.png",
 				"selectedIconPath": "static/tabs/user_selected.png"

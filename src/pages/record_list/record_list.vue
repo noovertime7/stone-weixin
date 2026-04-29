@@ -1,7 +1,10 @@
 <template>
   <view class="navbar">
     <view @click="onSearch">
-      <uni-search-bar placeholder="搜索您小区的安装" bgColor="#EEEEEE" readonly />
+      <view class="search-bar">
+        <uni-icons type="search" size="18" color="rgba(255,255,255,0.4)"></uni-icons>
+        <text class="placeholder">搜索您小区的安装</text>
+      </view>
     </view>
 
     <view v-if="Data" class="scroll-view">
@@ -21,10 +24,11 @@
           v-for="(item, index) in Data"
           :key="index"
         ></XtxRecordList>
-        <uni-load-more iconType="snow" :status="status" />
+        <uni-load-more iconType="snow" :status="status" color="#c9a96e" />
       </scroll-view>
     </view>
     <view v-else> <Skeleton></Skeleton> </view>
+    <XtxContactFloat />
   </view>
 </template>
 
@@ -35,7 +39,7 @@ import type { PageParams } from '@/types/global'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import type { Record } from '@/types/record_d'
-import type XtxRecordList from '@/components/XtxRecordList.vue'
+import XtxContactFloat from '@/components/XtxContactFloat.vue'
 const handleLoadMore = async () => {
   await getPageData()
 }
@@ -53,33 +57,17 @@ const onSearch = () => {
 }
 const isTriggered = ref(false)
 const onRefresherrefresh = async () => {
-  // 开始动画
   isTriggered.value = true
-
-  await Promise.all([
-    // getHomeBannerData(),
-    // getHomeCategoryData(),
-    // getHomeHotData(),
-    getPageData(),
-  ])
-  // 关闭动画
+  await Promise.all([getPageData()])
   isTriggered.value = false
 }
 
 const getPageData = async () => {
-  console.log(status.value)
-
   if (status.value != 'more') return
-
   status.value = 'loading'
-
   const res = await pageRecord(pageParams)
-  // 数组追加
   Data.value.push(...res.data.list)
-
-  // 分页条件
   if (pageParams.page < res.data.total && res.data.list.length > 0) {
-    // 页码累加
     pageParams.page++
     status.value = 'more'
   } else {
@@ -103,9 +91,25 @@ onLoad(() => {
 }
 
 .scroll-view {
-  background-color: #f7f7f7;
+  background-color: #1a1a1a;
   height: 95vh;
   display: flex;
   flex-direction: column;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  height: 72rpx;
+  margin: 16rpx 24rpx;
+  padding: 0 28rpx;
+  border-radius: 36rpx;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1rpx solid rgba(201, 169, 110, 0.12);
+  .placeholder {
+    font-size: 26rpx;
+    color: rgba(255, 255, 255, 0.35);
+  }
 }
 </style>

@@ -29,6 +29,15 @@
         placeholder="大理石描述信息，显示在详情页"
       ></uni-easyinput>
     </uni-section>
+    <uni-section title="颜色" type="line" padding>
+      <uni-easyinput trim="all" v-model="formData.color" placeholder="如：白色、灰色、米黄" />
+    </uni-section>
+    <uni-section title="产地" type="line" padding>
+      <uni-easyinput trim="all" v-model="formData.origin" placeholder="如：意大利、土耳其、福建" />
+    </uni-section>
+    <uni-section title="纹理" type="line" padding>
+      <uni-easyinput trim="all" v-model="formData.texture" placeholder="如：山水纹、直纹、乱纹" />
+    </uni-section>
     <uni-section title="封面图片" type="line" padding>
       <uni-notice-bar
         v-if="member.profile && query.id"
@@ -90,6 +99,9 @@ const formData = ref<StoneformData>({
   stoneTypeId: 0,
   description: '',
   hot: 1,
+  color: '',
+  origin: '',
+  texture: '',
 })
 
 const query = defineProps<{
@@ -151,6 +163,9 @@ onShow(async () => {
       stoneTypeId: StoneData.value.stoneTypeId,
       description: StoneData.value.description,
       hot: StoneData.value.hot,
+      color: StoneData.value.color || '',
+      origin: StoneData.value.origin || '',
+      texture: StoneData.value.texture || '',
     }
   }
 })
@@ -238,25 +253,30 @@ const clean = () => {
     stoneTypeId: 0,
     description: '',
     hot: 1,
+    color: '',
+    origin: '',
+    texture: '',
   }
   detailImageRef.value?.clearFiles()
   coverImageRef.value?.clearFiles()
 }
 </script>
 <style lang="scss">
+page {
+  background-color: #1a1a1a;
+}
+
 .example-body {
   padding: 10px;
   padding-top: 0;
 }
 .input {
-  color: '#2979FF';
-  border: '#2979FF';
+  color: #ffffff;
+  border: rgba(201, 169, 110, 0.2);
 }
 
 .custom-image-box {
-  /* #ifndef APP-NVUE */
   display: flex;
-  /* #endif */
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -264,15 +284,19 @@ const clean = () => {
 
 .text {
   font-size: 14px;
-  color: #333;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .button {
-  height: 80rpx;
-  margin: 30rpx 20rpx;
+  height: 88rpx;
+  margin: 30rpx 24rpx;
   color: #fff;
-  border-radius: 80rpx;
+  border-radius: 44rpx;
   font-size: 30rpx;
-  background-color: #27ba9b;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+  border: none;
+  background: linear-gradient(135deg, #c9a96e 0%, #b8943d 100%);
+  box-shadow: 0 8rpx 32rpx rgba(201, 169, 110, 0.3);
 }
 </style>

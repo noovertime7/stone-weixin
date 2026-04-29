@@ -1,14 +1,15 @@
 <template>
   <view :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
-    <view class="fixed-top bg-white">
+    <view class="fixed-top search-bar-bg">
       <view style="height: 20px"></view>
-      <view class="flex align-center" style="height: 44px; padding: 0 10px">
+      <view class="flex align-center" style="height: 44px; padding: 0 16px">
         <uni-easyinput
           class="flex-1"
           style="padding-right: 10px"
           suffixIcon="search"
           v-model="data"
           placeholder="请输入关键字后点击搜索图标搜索"
+          :inputStyle="{ color: '#ffffff', background: 'transparent' }"
           @iconClick="$emit('confirm', data)"
         ></uni-easyinput>
       </view>
@@ -34,12 +35,15 @@ export default {
   },
   methods: {
     back() {
-      uni.navigateBack({
-        delta: 1,
-      })
+      uni.navigateBack({ delta: 1 })
     },
   },
 }
 </script>
 
-<style></style>
+<style>
+.search-bar-bg {
+  background: #1a1a1a;
+  border-bottom: 1rpx solid rgba(201, 169, 110, 0.08);
+}
+</style>

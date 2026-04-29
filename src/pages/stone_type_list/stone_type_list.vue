@@ -11,21 +11,18 @@ const GetStoneTypes = async () => {
 }
 
 const handleDelete = async (id: number) => {
-  // 二次确认
   uni.showModal({
     content: '删除分类?',
+    confirmColor: '#c9a96e',
     success: async (res) => {
       if (res.confirm) {
-        // 根据id删除收货地址
         await deleteStoneType(id)
-        // 重新获取收货地址列表
         GetStoneTypes()
       }
     },
   })
 }
 
-// 初始化调用(页面显示)
 onShow(() => {
   GetStoneTypes()
 })
@@ -33,11 +30,9 @@ onShow(() => {
 
 <template>
   <view class="viewport">
-    <!-- 地址列表 -->
     <scroll-view class="scroll-view" scroll-y>
       <view v-if="StonesTypes?.length" class="address">
         <view class="address-list">
-          <!-- 收货地址项 -->
           <uni-swipe-action-item class="item" v-for="item in StonesTypes" :key="item.id">
             <view class="item-content">
               <view class="user">
@@ -51,7 +46,6 @@ onShow(() => {
                 修改
               </navigator>
             </view>
-            <!-- 右侧插槽 -->
             <template #right>
               <button class="delete-button" @tap="handleDelete(item.id)">删除</button>
             </template>
@@ -60,7 +54,6 @@ onShow(() => {
       </view>
       <view v-else class="blank">暂无大理石分类</view>
     </scroll-view>
-    <!-- 添加按钮 -->
     <view class="add-btn">
       <navigator hover-class="none" url="/pages/stone_types_add/stone_types_add">
         新建大理石分类
@@ -73,9 +66,9 @@ onShow(() => {
 page {
   height: 100%;
   overflow: hidden;
+  background: #1a1a1a;
 }
 
-/* 删除按钮 */
 .delete-button {
   display: flex;
   justify-content: center;
@@ -86,72 +79,49 @@ page {
   color: #fff;
   border-radius: 0;
   padding: 0;
-  background-color: #cf4444;
+  background-color: #ff4d4f;
 }
 
 .viewport {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: #f4f4f4;
-
+  background: #1a1a1a;
   .scroll-view {
     padding-top: 20rpx;
   }
 }
 
 .address {
-  padding: 0 20rpx;
-  margin: 0 20rpx;
-  border-radius: 10rpx;
-  background-color: #fff;
+  padding: 0 24rpx;
+  margin: 0 24rpx;
+  border-radius: 20rpx;
+  background: #222222;
+  border: 1rpx solid rgba(201, 169, 110, 0.08);
 
   .item-content {
     line-height: 1;
     padding: 40rpx 10rpx 38rpx;
-    border-bottom: 1rpx solid #ddd;
+    border-bottom: 1rpx solid rgba(255, 255, 255, 0.06);
     position: relative;
-
     .edit {
       position: absolute;
       top: 36rpx;
       right: 30rpx;
       padding: 2rpx 0 2rpx 20rpx;
-      border-left: 1rpx solid #666;
+      border-left: 1rpx solid rgba(255, 255, 255, 0.2);
       font-size: 26rpx;
-      color: #666;
+      color: #c9a96e;
       line-height: 1;
     }
   }
-
   .item:last-child .item-content {
     border: none;
   }
-
   .user {
     font-size: 28rpx;
     margin-bottom: 20rpx;
-    color: #333;
-
-    .contact {
-      color: #666;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 4rpx 10rpx 2rpx 14rpx;
-      margin: 2rpx 0 0 10rpx;
-      font-size: 26rpx;
-      color: #27ba9b;
-      border-radius: 6rpx;
-      border: 1rpx solid #27ba9b;
-    }
-  }
-
-  .locate {
-    line-height: 1.6;
-    font-size: 26rpx;
-    color: #333;
+    color: rgba(255, 255, 255, 0.85);
   }
 }
 
@@ -159,17 +129,20 @@ page {
   margin-top: 300rpx;
   text-align: center;
   font-size: 32rpx;
-  color: #888;
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .add-btn {
-  height: 80rpx;
+  height: 88rpx;
   text-align: center;
-  line-height: 80rpx;
-  margin: 30rpx 20rpx;
+  line-height: 88rpx;
+  margin: 30rpx 24rpx;
   color: #fff;
-  border-radius: 80rpx;
+  border-radius: 44rpx;
   font-size: 30rpx;
-  background-color: #27ba9b;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+  background: linear-gradient(135deg, #c9a96e 0%, #b8943d 100%);
+  box-shadow: 0 8rpx 32rpx rgba(201, 169, 110, 0.3);
 }
 </style>

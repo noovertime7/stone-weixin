@@ -9,6 +9,10 @@ export type Stone = {
   created_at: string
   updated_at: string
   buyNum: number
+  viewCount: number
+  color: string
+  origin: string
+  texture: string
 }
 
 export type PageStone = {

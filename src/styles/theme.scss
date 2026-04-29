@@ -1,0 +1,81 @@
+// Luxury Stone Gallery 主题变量
+// 深色调 + 金色点缀，高端石材展厅氛围
+
+// 背景色
+$bg-primary: #1a1a1a;
+$bg-secondary: #2a2a2a;
+$bg-tertiary: #0d0d0d;
+$bg-card: #222222;
+$bg-glass: rgba(26, 26, 26, 0.85);
+
+// 金色系
+$gold-primary: #c9a96e;
+$gold-light: #e8d5b7;
+$gold-dark: #8b7355;
+$gold-gradient: linear-gradient(135deg, #c9a96e 0%, #d4af37 50%, #e8d5b7 100%);
+$gold-gradient-btn: linear-gradient(135deg, #c9a96e 0%, #b8943d 100%);
+
+// 文字色
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.6);
+$text-tertiary: rgba(255, 255, 255, 0.35);
+$text-gold: #c9a96e;
+
+// 边框
+$border-subtle: rgba(201, 169, 110, 0.15);
+$border-gold: rgba(201, 169, 110, 0.3);
+
+// 圆角
+$radius-sm: 8rpx;
+$radius-md: 16rpx;
+$radius-lg: 24rpx;
+$radius-xl: 32rpx;
+
+// 阴影
+$shadow-card: 0 4rpx 24rpx rgba(0, 0, 0, 0.3);
+$shadow-gold: 0 2rpx 16rpx rgba(201, 169, 110, 0.15);
+
+// 间距
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+$spacing-xl: 48rpx;
+
+// 字体大小
+$font-xs: 20rpx;
+$font-sm: 24rpx;
+$font-md: 28rpx;
+$font-lg: 32rpx;
+$font-xl: 36rpx;
+$font-xxl: 44rpx;
+
+// 磨砂玻璃效果
+@mixin glass-effect {
+  background: $bg-glass;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+// 金色文字渐变
+@mixin gold-text {
+  background: $gold-gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// 深色卡片
+@mixin dark-card {
+  background: $bg-card;
+  border-radius: $radius-lg;
+  border: 1rpx solid $border-subtle;
+  box-shadow: $shadow-card;
+}
+
+// 金色边框卡片
+@mixin gold-border-card {
+  background: $bg-card;
+  border-radius: $radius-lg;
+  border: 1rpx solid $border-gold;
+}

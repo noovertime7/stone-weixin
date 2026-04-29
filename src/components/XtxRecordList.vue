@@ -1,20 +1,20 @@
 <template>
-  <view class="scroll-row-item course course-one" @click="openDetail">
-    <view class="position-relative">
-      <image :src="record.images[0]"></image>
-      <view class="text-white font-sm">{{ record.stoneName }}</view>
+  <view class="record-card" @click="openDetail">
+    <view class="card-image">
+      <image :src="record.images[0]" mode="aspectFill"></image>
     </view>
-    <view class="flex flex-column flex-shrink">
-      <view class="flex align-center">
-        <uni-icons type="calendar" size="15"></uni-icons>
-        <text class="text-ellipsis font-sm"> {{ record.date }}</text>
+    <view class="card-info">
+      <view class="stone-name">{{ record.stoneName }}</view>
+      <view class="info-row">
+        <uni-icons type="calendar" size="14" color="#c9a96e"></uni-icons>
+        <text class="date">{{ record.date }}</text>
       </view>
       <text class="description">{{ record.description }}</text>
-      <view class="flex align-center mt-1 text-light-muted" v-if="record.location">
-        <uni-icons type="location" size="20" color="#A9A5A0"></uni-icons>
-        <text class="text-ellipsis font-sm"> {{ record.location }}</text>
+      <view class="info-row" v-if="record.location">
+        <uni-icons type="location" size="14" color="rgba(255,255,255,0.35)"></uni-icons>
+        <text class="location">{{ record.location }}</text>
       </view>
-      <view class="flex flex-1 align-end">
+      <view class="tags">
         <uni-tag text="视频" inverted type="primary" circle v-if="record.video" size="mini" />
         <uni-tag
           text="图片"
@@ -23,7 +23,7 @@
           circle
           v-if="record.images"
           size="mini"
-          style="margin: 0 0.5rem"
+          style="margin-left: 12rpx"
         />
       </view>
     </view>
@@ -33,26 +33,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Record } from '../types/record_d'
-// const openDetail = () => {
-//   let params = `id=${item.id}`;
-
-//   if (item.group_id) {
-//     params += `&group_id=${item.group_id}`;
-//   }
-//   if (item.flashsale_id) {
-//     params += `&flashsale_id=${item.flashsale_id}`;
-//   }
-
-//   let url = '/pages/course/course?' + params;
-//   if (!item.type || item.type == 'column') {
-//     url = '/pages/column/column?' + params;
-//   }
-//   if (item.type == 'live') {
-//     url = '/pages/live/live?' + params;
-//   }
-
-//   uni.navigateTo({ url });
-// };
 
 const openDetail = () => {}
 
@@ -65,50 +45,81 @@ const tag = ref(props.tag)
 </script>
 
 <style scoped>
-.course-two {
-  width: 340rpx;
-  margin-left: 20rpx;
-  margin-bottom: 20rpx;
+.record-card {
+  display: flex;
+  padding: 24rpx;
+  margin: 16rpx 24rpx;
+  background: #222222;
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(201, 169, 110, 0.08);
 }
-.course-two > view:last-child > text:first-child {
-  margin-top: 10rpx;
+
+.card-image {
+  position: relative;
+  width: 260rpx;
+  height: 200rpx;
+  flex-shrink: 0;
+  margin-right: 24rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
 }
-.course-two image,
-.course-two > view:first-child {
-  width: 340rpx;
-  height: 180rpx;
+
+.card-image image {
+  width: 100%;
+  height: 100%;
 }
-.course > view:first-child > view {
-  position: absolute;
-  right: 10rpx;
-  bottom: 10rpx;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 0 10rpx;
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
-.course-one {
-  display: flex !important;
-  padding: 20rpx;
+
+.stone-name {
+  font-size: 28rpx;
+  color: #c9a96e;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+  margin-bottom: 12rpx;
 }
-.course-one > view:first-child {
-  margin-right: 20rpx;
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 8rpx;
 }
-.course-one image,
-.course-one > view:first-child {
-  width: 300rpx;
-  height: 180rpx;
-  flex-shrink: 1;
-}
-.course-one > view:last-child {
-  width: 400rpx;
+
+.date {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .description {
-  margin-top: 5rpx; /* 调整 xxx 和 name 之间的间距 */
-  font-size: 24rpx; /* 适当调整 description 的字体大小 */
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.45);
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  margin-bottom: 8rpx;
+  line-height: 1.5;
+}
+
+.location {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.35);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.tags {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 8rpx;
 }
 </style>

@@ -5,13 +5,14 @@ export type Record = Common & {
   stoneId: number
   stoneName?: ''
   video: string
-  images: string[] // 这里可能需要根据实际情况更改为适当的类型
+  images: string[]
   location: string
-  detailedlocation: string // 详细地址
+  detailedlocation: string
   description: string
   longitude: number
   latitude: number
   date?: string
+  viewCount: number
 }
 
 export type PageRecord = {

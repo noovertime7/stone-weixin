@@ -1,8 +1,5 @@
 <template>
   <view class="navbar">
-    <!-- <view>
-      <SearchBar :inputData="query.keyword" @click="backSearch"></SearchBar>
-    </view> -->
     <view>
       <view class="flex flex-column" style="height: 100%">
         <XtxTab :tabs="tabs" :current="current" @change="clickTab"></XtxTab>
@@ -11,7 +8,6 @@
           <view class="flex">
             <scroll-view class="flex-1" scroll-y @scrolltolower="handleLoadMore(tabs[current])">
               <view v-for="(item, index) in tabs[current].list" :key="index">
-                <!--           -->
                 <XtxStonelist
                   v-if="tabs[current].type == 'stone'"
                   @tap="pushStoneDetail(item.id)"
@@ -48,7 +44,6 @@ import XtxStonelist from '@/components/XtxStonelist.vue'
 import { pageRecord } from '../../services/record'
 import type { Record } from '../../types/record_d'
 
-// 接收页面参数
 const query = defineProps<{
   keyword: string
   current: number
@@ -61,15 +56,11 @@ const pageParams: Required<PageParams> = {
 }
 
 const pushStoneDetail = (id: number) => {
-  uni.navigateTo({
-    url: `/pages/stone/stone?id=${id}`,
-  })
+  uni.navigateTo({ url: `/pages/stone/stone?id=${id}` })
 }
 
 const pushRecordDetail = (id: number) => {
-  uni.navigateTo({
-    url: `/pages/record/record?id=${id}`,
-  })
+  uni.navigateTo({ url: `/pages/record/record?id=${id}` })
 }
 
 type TabItem = {
@@ -101,19 +92,13 @@ const tabs = ref<TabItem[]>([
 ])
 
 const handleLoadMore = async (t: TabItem) => {
-  if (t.finish) {
-    return
-  }
+  if (t.finish) return
   t.page++
   await getData()
 }
 
 const clickTab = (index: number) => {
-  swiperChange({
-    detail: {
-      current: index,
-    },
-  })
+  swiperChange({ detail: { current: index } })
 }
 
 const swiperChange = (e: any) => {
@@ -123,35 +108,26 @@ const swiperChange = (e: any) => {
     getData()
   }
 }
-// 已结束标记
+
 const getData = async () => {
   let tab = tabs.value[current.value]
   switch (tab.type) {
     case 'stone': {
-      if (tab.finish === true) {
-        return
-      }
+      if (tab.finish === true) return
       let res = await pageStone(pageParams)
-      // 分页条件
       if (res.data.total < pageParams.pageSize) {
         tab.finish = true
       }
       tab.list = tab.page == 1 ? res.data.list : [...tab.list, ...res.data.list]
-
       break
     }
-
     case 'record': {
-      if (tab.finish === true) {
-        return
-      }
+      if (tab.finish === true) return
       let res = await pageRecord(pageParams)
-      // 分页条件
       if (res.data.total < pageParams.pageSize) {
         tab.finish = true
       }
       tab.list = tab.page == 1 ? res.data.list : [...tab.list, ...res.data.list]
-
       break
     }
   }
@@ -163,10 +139,15 @@ onShow(() => {
 </script>
 
 <style scoped>
+.navbar {
+  height: 100vh;
+  background: #1a1a1a;
+}
+
 .loading-text {
   text-align: center;
   font-size: 28rpx;
-  color: #666;
+  color: rgba(255, 255, 255, 0.35);
   padding: 20rpx 0;
 }
 </style>

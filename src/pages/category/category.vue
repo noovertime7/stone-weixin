@@ -3,7 +3,8 @@
     <!-- 搜索框 -->
     <view class="search" @click="onSearch">
       <view class="input">
-        <text class="icon-search">搜索大理石或安装记录</text>
+        <uni-icons type="search" size="18" color="rgba(255,255,255,0.4)"></uni-icons>
+        <text class="placeholder">搜索大理石或安装记录</text>
       </view>
     </view>
     <!-- 分类 -->
@@ -27,14 +28,8 @@
       </scroll-view>
       <!-- 右侧：二级分类 -->
       <scroll-view class="secondary" scroll-y>
-        <!-- 焦点图 -->
         <XtxSwiper class="banner" :list="bannerList" />
-        <!-- 内容区域 -->
         <view class="panel">
-          <!-- <view class="title">
-            <text class="name">宠物用品</text>
-            <navigator class="more" hover-class="none">全部</navigator>
-          </view> -->
           <view class="section">
             <navigator
               v-for="stone in Stones"
@@ -45,15 +40,12 @@
             >
               <image class="image" :src="stone.coverImages[0]"></image>
               <view class="name ellipsis">{{ stone.name }}</view>
-              <!-- <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">16.00</text>
-              </view> -->
             </navigator>
           </view>
         </view>
       </scroll-view>
     </view>
+    <XtxContactFloat />
   </view>
 </template>
 <script setup lang="ts">
@@ -63,6 +55,7 @@ import type { Stone } from '@/types/stone'
 import type { StoneType } from '@/types/stone_types'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+import XtxContactFloat from '@/components/XtxContactFloat.vue'
 const activeIndex = ref(0)
 const bannerList = ref<Stone[]>([])
 const stoneTypeListData = ref<StoneType[]>([])
@@ -76,8 +69,6 @@ const getHotBannerStones = async () => {
 const getstoneTypes = async () => {
   const res = await stoneTypeList()
   stoneTypeListData.value = res.data
-
-  // 页面首次打开需要获取当前类型下的大理石
   handelClickType(stoneTypeListData.value[activeIndex.value].id)
 }
 
@@ -102,6 +93,7 @@ onLoad(() => {
 page {
   height: 100%;
   overflow: hidden;
+  background-color: #1a1a1a;
 }
 .viewport {
   height: 100%;
@@ -109,23 +101,21 @@ page {
   flex-direction: column;
 }
 .search {
-  padding: 0 30rpx 20rpx;
-  background-color: #fff;
+  padding: 16rpx 24rpx 20rpx;
+  background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 100%);
   .input {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: 64rpx;
-    padding-left: 26rpx;
-    color: #8b8b8b;
-    font-size: 28rpx;
-    border-radius: 32rpx;
-    background-color: #f3f4f4;
-  }
-}
-.icon-search {
-  &::before {
-    margin-right: 10rpx;
+    gap: 12rpx;
+    height: 72rpx;
+    padding-left: 28rpx;
+    border-radius: 36rpx;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1rpx solid rgba(201, 169, 110, 0.12);
+    .placeholder {
+      font-size: 26rpx;
+      color: rgba(255, 255, 255, 0.35);
+    }
   }
 }
 /* 分类 */
@@ -139,34 +129,37 @@ page {
   overflow: hidden;
   width: 180rpx;
   flex: none;
-  background-color: #f6f6f6;
+  background: #0d0d0d;
   .item {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 96rpx;
+    height: 100rpx;
     font-size: 26rpx;
-    color: #595c63;
+    color: rgba(255, 255, 255, 0.5);
     position: relative;
     &::after {
       content: '';
       position: absolute;
-      left: 42rpx;
+      left: 32rpx;
       bottom: 0;
-      width: 96rpx;
-      border-top: 1rpx solid #e3e4e7;
+      width: 80rpx;
+      border-top: 1rpx solid rgba(255, 255, 255, 0.06);
     }
   }
   .active {
-    background-color: #fff;
+    background: #1a1a1a;
+    color: #c9a96e;
+    font-weight: 600;
     &::before {
       content: '';
       position: absolute;
       left: 0;
-      top: 0;
-      width: 8rpx;
-      height: 100%;
-      background-color: #27ba9b;
+      top: 20rpx;
+      width: 6rpx;
+      height: 60rpx;
+      border-radius: 0 6rpx 6rpx 0;
+      background: linear-gradient(180deg, #c9a96e, #d4af37);
     }
   }
 }
@@ -176,34 +169,14 @@ page {
 }
 /* 二级分类 */
 .secondary {
-  background-color: #fff;
-  .carousel {
-    height: 200rpx;
-    margin: 0 30rpx 20rpx;
-    border-radius: 4rpx;
+  background: #1a1a1a;
+  .banner {
+    margin: 24rpx 24rpx 0;
+    border-radius: 16rpx;
     overflow: hidden;
   }
   .panel {
-    margin: 0 30rpx 0rpx;
-  }
-  .title {
-    height: 60rpx;
-    line-height: 60rpx;
-    color: #333;
-    font-size: 28rpx;
-    border-bottom: 1rpx solid #f7f7f8;
-    .more {
-      float: right;
-      padding-left: 20rpx;
-      font-size: 24rpx;
-      color: #999;
-    }
-  }
-  .more {
-    &::after {
-      font-family: 'erabbit' !important;
-      content: '\e6c2';
-    }
+    margin: 0 24rpx;
   }
   .section {
     width: 100%;
@@ -212,27 +185,20 @@ page {
     padding: 20rpx 0;
     .goods {
       width: 150rpx;
-      margin: 0rpx 30rpx 20rpx 0;
+      margin: 0rpx 24rpx 24rpx 0;
       &:nth-child(3n) {
         margin-right: 0;
       }
       image {
         width: 150rpx;
         height: 150rpx;
+        border-radius: 12rpx;
       }
       .name {
-        padding: 5rpx;
+        padding: 8rpx 2rpx;
         font-size: 22rpx;
-        color: #333;
-      }
-      .price {
-        padding: 5rpx;
-        font-size: 18rpx;
-        color: #cf4444;
-      }
-      .number {
-        font-size: 24rpx;
-        margin-left: 2rpx;
+        color: rgba(255, 255, 255, 0.8);
+        text-align: center;
       }
     }
   }

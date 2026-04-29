@@ -18,15 +18,33 @@ export const useMemberStore = defineStore(
       profile.value = undefined
     }
 
+    // 判断是否已登录
+    const isLoggedIn = () => {
+      return !!profile.value?.token
+    }
+
     // 记得 return
     return {
       profile,
       setProfile,
       clearProfile,
+      isLoggedIn,
     }
   },
-  // TODO: 持久化
   {
-    persist: true,
+    persist: {
+      key: 'member',
+      storage: {
+        getItem(key) {
+          return uni.getStorageSync(key)
+        },
+        setItem(key, value) {
+          uni.setStorageSync(key, value)
+        },
+        removeItem(key) {
+          uni.removeStorageSync(key)
+        },
+      },
+    },
   },
 )

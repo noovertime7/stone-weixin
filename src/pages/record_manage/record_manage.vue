@@ -66,7 +66,7 @@
     </uni-section>
   </view>
   <!-- 提交按钮 -->
-  <button @tap="onSubmit" class="button">{{ '添加安装记录' }}</button>
+  <button @tap="onSubmit" class="button">{{ query.id ? '修改安装记录' : '添加安装记录' }}</button>
 </template>
 
 <script lang="ts" setup>
@@ -78,8 +78,12 @@ import { getAddressByLocation, openMap } from '../../utils/location'
 import { stoneTypeList } from '../../services/stone_types'
 import { upload } from '../stone_manage/helper'
 import type { image } from '../stone_manage/helper'
-import { createRecord } from '../../services/record'
+import { createRecord, updateRecord, getRecordById } from '../../services/record'
 import { MyformatDate } from '@/utils/format.js'
+
+const query = defineProps<{
+  id: string
+}>()
 
 const detailImageRef = ref()
 const onchange = (e) => {
@@ -96,15 +100,13 @@ const formData = ref<Record>({
   description: '',
   detailedlocation: '',
   date: MyformatDate(new Date(), 'yyyy-mm-dd'),
+  viewCount: 0,
 })
 
-console.log("MyformatDate(new Date(), 'yyyy-mm-dd')", MyformatDate(new Date(), 'yyyy-mm-dd'))
-
 const onSubmit = async () => {
-  // 显示 Loading
   uni.showLoading({
-    title: '添加中...',
-    mask: true, // 是否显示透明蒙层，防止触摸穿透，默认为 false
+    title: query.id ? '修改中...' : '添加中...',
+    mask: true,
   })
 
   for (const file of video.value) {
@@ -114,7 +116,6 @@ const onSubmit = async () => {
     }
   }
 
-  // 上传 detailImages
   for (const file of detailImages.value) {
     const resp = await upload(file, 'image')
     if (resp) {
@@ -124,14 +125,17 @@ const onSubmit = async () => {
 
   formData.value.stoneId = parseInt(formData.value.stoneId.toString().split('-')[1])
 
-  const res = await createRecord(formData.value)
-  if (res) {
-    uni.showToast({
-      title: `新增成功，一路顺风`,
-      icon: 'success',
-      duration: 2000,
-    })
-    clean()
+  if (query.id) {
+    const res = await updateRecord(parseInt(query.id), formData.value)
+    if (res) {
+      uni.showToast({ title: '修改成功', icon: 'success', duration: 2000 })
+    }
+  } else {
+    const res = await createRecord(formData.value)
+    if (res) {
+      uni.showToast({ title: '新增成功，一路顺风', icon: 'success', duration: 2000 })
+      clean()
+    }
   }
 
   uni.hideLoading()
@@ -213,6 +217,7 @@ const clean = () => {
     latitude: 0,
     description: '',
     detailedlocation: '',
+    viewCount: 0,
   }
   detailImageRef.value?.clearFiles()
   videoRef.value?.clearFiles()
@@ -230,32 +235,58 @@ const buildAddress = async () => {
 
 onLoad(async () => {
   getStoneTreeData()
-  buildAddress()
+  if (query.id) {
+    const res = await getRecordById(query.id)
+    const data = res.data
+    formData.value = {
+      id: data.id,
+      stoneId: data.stoneId,
+      video: data.video,
+      images: data.images || [],
+      location: data.location,
+      longitude: data.longitude,
+      latitude: data.latitude,
+      description: data.description,
+      detailedlocation: data.detailedlocation,
+      date: data.date,
+      viewCount: data.viewCount || 0,
+    }
+  } else {
+    buildAddress()
+  }
 })
 </script>
 
 <style lang="scss">
+page {
+  background-color: #1a1a1a;
+}
+
 .example-body {
   padding: 10px;
   padding-top: 0;
 }
 .input {
-  color: '#2979FF';
-  border: '#2979FF';
+  color: #ffffff;
+  border: rgba(201, 169, 110, 0.2);
 }
 
 .text {
   font-size: 14px;
-  color: #333;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .button {
-  height: 80rpx;
-  margin: 30rpx 20rpx;
+  height: 88rpx;
+  margin: 30rpx 24rpx;
   color: #fff;
-  border-radius: 80rpx;
+  border-radius: 44rpx;
   font-size: 30rpx;
-  background-color: #27ba9b;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+  border: none;
+  background: linear-gradient(135deg, #c9a96e 0%, #b8943d 100%);
+  box-shadow: 0 8rpx 32rpx rgba(201, 169, 110, 0.3);
 }
 .map-button {
   height: 40px;
@@ -263,37 +294,19 @@ onLoad(async () => {
 }
 
 .title {
-  margin-bottom: 5px;
-  margin: 10px 0;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 20px 0 5px 0;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .detail {
   margin-left: 10px;
-}
-
-.title {
-  font-size: 14px;
-  font-weight: bold;
-  margin: 20px 0 5px 0;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .data-pickerview {
   height: 400px;
-  border: 1px #e5e5e5 solid;
-}
-
-.popper__arrow {
-  top: -6px;
-  left: 50%;
-  margin-right: 3px;
-  border-top-width: 0;
-  border-bottom-color: #ebeef5;
-}
-.popper__arrow {
-  top: -6px;
-  left: 50%;
-  margin-right: 3px;
-  border-top-width: 0;
-  border-bottom-color: #ebeef5;
+  border: 1px solid rgba(201, 169, 110, 0.15);
 }
 </style>

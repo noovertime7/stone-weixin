@@ -10,6 +10,14 @@ export const createRecord = (data: Record) => {
   })
 }
 
+export const updateRecord = (id: number, data: Record) => {
+  return http<StringData>({
+    method: 'POST',
+    url: `/record/${id}/update`,
+    data,
+  })
+}
+
 export const pageRecord = (data: PageParams) => {
   return http<PageRecord>({
     method: 'GET',

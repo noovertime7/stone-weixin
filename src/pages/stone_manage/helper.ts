@@ -19,6 +19,9 @@ export type StoneformData = {
   stoneTypeId: number
   description: string
   hot: number
+  color: string
+  origin: string
+  texture: string
 }
 
 type fileType = 'image' | 'video'

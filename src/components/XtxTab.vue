@@ -1,5 +1,5 @@
 <template>
-  <view class="flex" style="border-bottom: 1rpx solid #f4f4f4">
+  <view class="tab-bar">
     <view
       class="tab-item"
       v-for="(item, index) in tabs"
@@ -7,10 +7,10 @@
       :class="current == index ? 'tab-item-active' : ''"
       @click="$emit('change', index)"
     >
-      <text class="font-md">{{ item.name }}</text>
+      <text class="tab-text">{{ item.name }}</text>
       <view
         v-if="index == current"
-        class="tab-line animate__animated animate__fadeIn animate__faster"
+        class="tab-line"
       ></view>
     </view>
   </view>
@@ -30,6 +30,11 @@ export default {
 </script>
 
 <style>
+.tab-bar {
+  display: flex;
+  border-bottom: 1rpx solid rgba(201, 169, 110, 0.08);
+  background: #1a1a1a;
+}
 .tab-item {
   position: relative;
   display: flex;
@@ -37,19 +42,23 @@ export default {
   align-items: center;
   justify-content: center;
   flex: 1;
-  padding: 20rpx;
-  color: #888888;
+  padding: 24rpx;
+  color: rgba(255, 255, 255, 0.4);
+}
+.tab-text {
+  font-size: 28rpx;
+  letter-spacing: 2rpx;
 }
 .tab-line {
-  width: 50rpx;
-  height: 10rpx;
-  background-color: #00cf8a;
-  border-radius: 10rpx;
+  width: 48rpx;
+  height: 6rpx;
+  background: linear-gradient(90deg, #c9a96e, #d4af37);
+  border-radius: 6rpx;
   position: absolute;
   bottom: 0;
 }
 .tab-item-active {
-  color: #00cf8a;
-  font-weight: bold;
+  color: #c9a96e;
+  font-weight: 600;
 }
 </style>
