@@ -80,6 +80,7 @@ import { upload } from '../stone_manage/helper'
 import type { image } from '../stone_manage/helper'
 import { createRecord, updateRecord, getRecordById } from '../../services/record'
 import { MyformatDate } from '@/utils/format.js'
+import { showWeatherReminder } from '@/utils/utils'
 
 const query = defineProps<{
   id: string
@@ -134,7 +135,12 @@ const onSubmit = async () => {
     const res = await createRecord(formData.value)
     if (res) {
       uni.showToast({ title: '新增成功，一路顺风', icon: 'success', duration: 2000 })
+      const location = formData.value.location
       clean()
+      // 延迟弹出天气提醒，等 toast 消失
+      setTimeout(() => {
+        showWeatherReminder(location)
+      }, 2200)
     }
   }
 
